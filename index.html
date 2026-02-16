@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mag 7 Machining | High-Tech CNC & Wire EDM</title>
+    
+    <!-- Favicon (Small Tab Logo) -->
+    <link rel="icon" type="image/png" href="MAG7 LOGO.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -52,6 +56,7 @@
         .g-code-scroll {
             display: flex;
             flex-direction: column;
+            /* 60s technical crawl */
             animation: scrollCode 60s linear infinite;
         }
 
@@ -167,104 +172,104 @@
                 <!-- Animated G-Code Overlay HUD (Mag 7 Red) -->
                 <div class="g-code-hud">
                     <div class="g-code-scroll">
-(**** TOOL HEAD TOOLS ****)<br>
-(T001 OD TURN - 55 )<br>
-(T002 OD GROOVE .125 )<br>
-(T003 CENTER DRILL  0.0938)<br>
-(T004 DRILL 1/8-Z  0.125)<br>
-(T005 MILL 1/8 - Z  0.125)<br>
-(T006 MILL 1/4 - Z  0.25)<br>
-(T007 FACE MILL  1.75)<br>
-(T008 SLANTED END MILL  0.25)<br>
-(T009 SPOT DRILL .5  0.5)<br>
-(T010 DRILL .375  0.375)<br>
-(T011 MILL 1/8 - X  0.125)<br>
-(T012 CUT-OFF )<br>
-  <br>
-G95 G90 G80 G64 G49 G40 G18 G0<br>
-G10.9 X1. (X DIAM)<br>
-G53 G0 X0 Y0<br>
-G53 Z0<br>
-G53 W0<br>
-M108<br>
-G53 B0.0<br>
-M107<br>
-  <br>
-N01 (TOOL 001 TURN FACE)<br>
-G90 G80 G64 G49 G18 G0<br>
-G10.9 X1. (DIAM PROGRAM)<br>
-G53 X0 Y0<br>
-G53 Z5.0 (TCH Z)<br>
-T001.1   M6 (OD TURN - 55)<br>
-M1<br>
-M901 (MAIN)<br>
-M202 (MAIN SPINDLE TURN MODE)<br>
-M108 (UNCLAMP B)<br>
-G53 G0 B90.0<br>
-M107 (CLAMP B)<br>
-G95 G54 G18 G0 <br>
-G97 S669 M203<br>
-M8 (STD COOL HEAD)<br>
-G0 G95 X3.35 Z0.1<br>
-G92 S1600 R1<br>
-G96 S560 R1<br>
-X3.1376 <br>
-Z0.<br>
-G1 X2.9376 F0.01088<br>
-X-0.0624 <br>
-X-0.2624 <br>
-G0 X3.35 Z0.1<br>
-  <br>
-N02 (TURN OD TURN 1)<br>
-Z0.05<br>
-G96 S560 R1<br>
-X3.05 <br>
-G1 Z-3.0312 <br>
-X3.35 <br>
-G0 Z0.05<br>
-X2.85 <br>
-G1 Z-1.1208 <br>
-X3.0127 Z-1.2741 <br>
-G3 X3.02 Z-1.2887 R0.0312 <br>
-G1 Z-3.0312 <br>
-X3.05 <br>
-X3.1207 Z-2.9958 <br>
-G0 Z0.05<br>
-X2.65 <br>
-G1 Z-0.9325 <br>
-X2.85 Z-1.1208 <br>
-X2.9207 Z-1.0855 <br>
-G0 Z0.05<br>
-X2.45 <br>
-G1 Z-0.7441 <br>
-X2.65 Z-0.9325 <br>
-X2.7207 Z-0.8971 <br>
-G0 Z0.05<br>
-X2.25 <br>
-G1 Z-0.5557 <br>
-X2.45 Z-0.7441 <br>
-X2.5207 Z-0.7087 <br>
-G0 Z0.05<br>
-X2.05 <br>
-G1 Z-0.5 <br>
-X2.1533 <br>
-G3 X2.2084 Z-0.5166 R0.0312 <br>
-G1 X2.25 Z-0.5557 <br>
-X2.3207 Z-0.5204 <br>
-G0 Z0.05<br>
-X2.02 <br>
-G1 Z-0.5 <br>
-X2.05 <br>
-X2.1207 Z-0.4646 <br>
-G0 X3.35 <br>
-Z0.05<br>
-M9 (ALL COOL OFF HEAD)<br>
-G49<br>
-G90 G53 X0 Y0<br>
-G53 Z0<br>
-M108<br>
-G53 B0.0<br>
-M1<br>
+                        (**** TOOL HEAD TOOLS ****)<br>
+                        (T001 OD TURN - 55 )<br>
+                        (T002 OD GROOVE .125 )<br>
+                        (T003 CENTER DRILL  0.0938)<br>
+                        (T004 DRILL 1/8-Z  0.125)<br>
+                        (T005 MILL 1/8 - Z  0.125)<br>
+                        (T006 MILL 1/4 - Z  0.25)<br>
+                        (T007 FACE MILL  1.75)<br>
+                        (T008 SLANTED END MILL  0.25)<br>
+                        (T009 SPOT DRILL .5  0.5)<br>
+                        (T010 DRILL .375  0.375)<br>
+                        (T011 MILL 1/8 - X  0.125)<br>
+                        (T012 CUT-OFF )<br>
+                          <br>
+                        G95 G90 G80 G64 G49 G40 G18 G0<br>
+                        G10.9 X1. (X DIAM)<br>
+                        G53 G0 X0 Y0<br>
+                        G53 Z0<br>
+                        G53 W0<br>
+                        M108<br>
+                        G53 B0.0<br>
+                        M107<br>
+                          <br>
+                        N01 (TOOL 001 TURN FACE)<br>
+                        G90 G80 G64 G49 G18 G0<br>
+                        G10.9 X1. (DIAM PROGRAM)<br>
+                        G53 X0 Y0<br>
+                        G53 Z5.0 (TCH Z)<br>
+                        T001.1   M6 (OD TURN - 55)<br>
+                        M1<br>
+                        M901 (MAIN)<br>
+                        M202 (MAIN SPINDLE TURN MODE)<br>
+                        M108 (UNCLAMP B)<br>
+                        G53 G0 B90.0<br>
+                        M107 (CLAMP B)<br>
+                        G95 G54 G18 G0 <br>
+                        G97 S669 M203<br>
+                        M8 (STD COOL HEAD)<br>
+                        G0 G95 X3.35 Z0.1<br>
+                        G92 S1600 R1<br>
+                        G96 S560 R1<br>
+                        X3.1376 <br>
+                        Z0.<br>
+                        G1 X2.9376 F0.01088<br>
+                        X-0.0624 <br>
+                        X-0.2624 <br>
+                        G0 X3.35 Z0.1<br>
+                          <br>
+                        N02 (TURN OD TURN 1)<br>
+                        Z0.05<br>
+                        G96 S560 R1<br>
+                        X3.05 <br>
+                        G1 Z-3.0312 <br>
+                        X3.35 <br>
+                        G0 Z0.05<br>
+                        X2.85 <br>
+                        G1 Z-1.1208 <br>
+                        X3.0127 Z-1.2741 <br>
+                        G3 X3.02 Z-1.2887 R0.0312 <br>
+                        G1 Z-3.0312 <br>
+                        X3.05 <br>
+                        X3.1207 Z-2.9958 <br>
+                        G0 Z0.05<br>
+                        X2.65 <br>
+                        G1 Z-0.9325 <br>
+                        X2.85 Z-1.1208 <br>
+                        X2.9207 Z-1.0855 <br>
+                        G0 Z0.05<br>
+                        X2.45 <br>
+                        G1 Z-0.7441 <br>
+                        X2.65 Z-0.9325 <br>
+                        X2.7207 Z-0.8971 <br>
+                        G0 Z0.05<br>
+                        X2.25 <br>
+                        G1 Z-0.5557 <br>
+                        X2.45 Z-0.7441 <br>
+                        X2.5207 Z-0.7087 <br>
+                        G0 Z0.05<br>
+                        X2.05 <br>
+                        G1 Z-0.5 <br>
+                        X2.1533 <br>
+                        G3 X2.2084 Z-0.5166 R0.0312 <br>
+                        G1 X2.25 Z-0.5557 <br>
+                        X2.3207 Z-0.5204 <br>
+                        G0 Z0.05<br>
+                        X2.02 <br>
+                        G1 Z-0.5 <br>
+                        X2.05 <br>
+                        X2.1207 Z-0.4646 <br>
+                        G0 X3.35 <br>
+                        Z0.05<br>
+                        M9 (ALL COOL OFF HEAD)<br>
+                        G49<br>
+                        G90 G53 X0 Y0<br>
+                        G53 Z0<br>
+                        M108<br>
+                        G53 B0.0<br>
+                        M1<br>
                     </div>
                 </div>
                 <canvas id="particle-canvas"></canvas>
@@ -391,10 +396,6 @@ M1<br>
                         </div>
                         <div class="p-8 space-y-4">
                             <p class="text-slate-400">High-performance CNC solutions for racing and custom vehicle development.</p>
-                            <ul class="text-sm text-slate-500 space-y-2">
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Performance Suspension Units</li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Engine Block Machining</li>
-                            </ul>
                         </div>
                     </div>
                     <!-- Defense -->
@@ -406,10 +407,6 @@ M1<br>
                         </div>
                         <div class="p-8 space-y-4">
                             <p class="text-slate-400">Rugged tactical hardware and ITAR-compliant manufacturing.</p>
-                            <ul class="text-sm text-slate-500 space-y-2">
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> ITAR Certified Workflow</li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Tactical Housing Units</li>
-                            </ul>
                         </div>
                     </div>
                 </div>
