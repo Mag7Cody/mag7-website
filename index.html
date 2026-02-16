@@ -177,6 +177,11 @@
             padding: 4px 10px;
             animation: pulse 1s infinite;
         }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-black text-slate-100 selection:bg-red-600 selection:text-white">
@@ -215,7 +220,20 @@
             <header class="hero-gradient min-h-[90vh] flex items-center relative overflow-hidden">
                 <div class="g-code-hud">
                     <div class="g-code-scroll">
-                        (**** START MAG7 SESSION ****)<br>
+                        (**** TOOL HEAD TOOLS ****)<br>
+                        (T001 OD TURN - 55 )<br>
+                        (T002 OD GROOVE .125 )<br>
+                        (T003 CENTER DRILL 0.0938)<br>
+                        (T004 DRILL 1/8-Z 0.125)<br>
+                        (T005 MILL 1/8 - Z 0.125)<br>
+                        (T006 MILL 1/4 - Z 0.25)<br>
+                        (T007 FACE MILL 1.75)<br>
+                        (T008 SLANTED END MILL 0.25)<br>
+                        (T009 SPOT DRILL .5 0.5)<br>
+                        (T010 DRILL .375 0.375)<br>
+                        (T011 MILL 1/8 - X 0.125)<br>
+                        (T012 CUT-OFF )<br>
+                        &nbsp; <br>
                         G95 G90 G80 G64 G49 G40 G18 G0<br>
                         G10.9 X1. (X DIAM)<br>
                         G53 G0 X0 Y0<br>
@@ -223,23 +241,61 @@
                         M108<br>
                         G53 B0.0<br>
                         M107<br>
+                        &nbsp; <br>
                         N01 (TOOL 001 TURN FACE)<br>
                         G90 G80 G64 G49 G18 G0<br>
+                        G10.9 X1. (DIAM PROGRAM)<br>
                         G53 X0 Y0<br>
                         G53 Z5.0 (TCH Z)<br>
                         T001.1   M6 (OD TURN - 55)<br>
+                        M1<br>
+                        M901 (MAIN)<br>
                         M202 (MAIN SPINDLE TURN MODE)<br>
+                        M108 (UNCLAMP B)<br>
+                        G53 G0 B90.0<br>
+                        M107 (CLAMP B)<br>
+                        G95 G54 G18 G0 <br>
                         G97 S669 M203<br>
                         M8 (STD COOL HEAD)<br>
                         G0 G95 X3.35 Z0.1<br>
+                        G92 S1600 R1<br>
                         G96 S560 R1<br>
+                        X3.1376 <br>
                         Z0.<br>
                         G1 X2.9376 F0.01088<br>
                         X-0.0624 <br>
                         X-0.2624 <br>
                         G0 X3.35 Z0.1<br>
+                        &nbsp; <br>
+                        N02 (TURN OD TURN 1)<br>
+                        Z0.05<br>
+                        G96 S560 R1<br>
+                        X3.05 <br>
+                        G1 Z-3.0312 <br>
+                        X3.35 <br>
+                        G0 Z0.05<br>
+                        X2.85 <br>
+                        G1 Z-1.1208 <br>
+                        X3.0127 Z-1.2741 <br>
+                        G3 X3.02 Z-1.2887 R0.0312 <br>
+                        G1 Z-3.0312 <br>
+                        X3.05 <br>
                         M30<br>
-                        (**** LOOP RESTART ****)<br>
+                        (**** REPEAT ****)<br>
+                        (**** TOOL HEAD TOOLS ****)<br>
+                        (T001 OD TURN - 55 )<br>
+                        (T002 OD GROOVE .125 )<br>
+                        (T003 CENTER DRILL 0.0938)<br>
+                        (T004 DRILL 1/8-Z 0.125)<br>
+                        (T005 MILL 1/8 - Z 0.125)<br>
+                        (T006 MILL 1/4 - Z 0.25)<br>
+                        (T007 FACE MILL 1.75)<br>
+                        (T008 SLANTED END MILL 0.25)<br>
+                        (T009 SPOT DRILL .5 0.5)<br>
+                        (T010 DRILL .375 0.375)<br>
+                        (T011 MILL 1/8 - X 0.125)<br>
+                        (T012 CUT-OFF )<br>
+                        &nbsp; <br>
                         G95 G90 G80 G64 G49 G40 G18 G0<br>
                         G10.9 X1. (X DIAM)<br>
                         G53 G0 X0 Y0<br>
@@ -247,21 +303,45 @@
                         M108<br>
                         G53 B0.0<br>
                         M107<br>
+                        &nbsp; <br>
                         N01 (TOOL 001 TURN FACE)<br>
                         G90 G80 G64 G49 G18 G0<br>
+                        G10.9 X1. (DIAM PROGRAM)<br>
                         G53 X0 Y0<br>
                         G53 Z5.0 (TCH Z)<br>
                         T001.1   M6 (OD TURN - 55)<br>
+                        M1<br>
+                        M901 (MAIN)<br>
                         M202 (MAIN SPINDLE TURN MODE)<br>
+                        M108 (UNCLAMP B)<br>
+                        G53 G0 B90.0<br>
+                        M107 (CLAMP B)<br>
+                        G95 G54 G18 G0 <br>
                         G97 S669 M203<br>
                         M8 (STD COOL HEAD)<br>
                         G0 G95 X3.35 Z0.1<br>
+                        G92 S1600 R1<br>
                         G96 S560 R1<br>
+                        X3.1376 <br>
                         Z0.<br>
                         G1 X2.9376 F0.01088<br>
                         X-0.0624 <br>
                         X-0.2624 <br>
                         G0 X3.35 Z0.1<br>
+                        &nbsp; <br>
+                        N02 (TURN OD TURN 1)<br>
+                        Z0.05<br>
+                        G96 S560 R1<br>
+                        X3.05 <br>
+                        G1 Z-3.0312 <br>
+                        X3.35 <br>
+                        G0 Z0.05<br>
+                        X2.85 <br>
+                        G1 Z-1.1208 <br>
+                        X3.0127 Z-1.2741 <br>
+                        G3 X3.02 Z-1.2887 R0.0312 <br>
+                        G1 Z-3.0312 <br>
+                        X3.05 <br>
                         M30
                     </div>
                 </div>
@@ -300,7 +380,7 @@
             </section>
         </div>
 
-        <!-- CAPABILITIES PAGE (Restored 6-card config) -->
+        <!-- CAPABILITIES PAGE -->
         <div id="capabilities" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto text-center mb-16">
                 <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Engineering Excellence</h2>
@@ -340,7 +420,7 @@
             </div>
         </div>
 
-        <!-- INDUSTRIES PAGE (Locked: Automotive/Defense Tiles) -->
+        <!-- INDUSTRIES PAGE (Locked) -->
         <div id="industries" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto text-center mb-16">
                 <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Market Focus</h2>
@@ -394,7 +474,7 @@
             </div>
         </div>
 
-        <!-- ABOUT PAGE (Restored Detailed Content) -->
+        <!-- ABOUT PAGE -->
         <div id="about" class="page-content py-20 px-6">
             <div class="max-w-4xl mx-auto space-y-16">
                 <div class="text-center relative reveal">
@@ -416,38 +496,41 @@
             </div>
         </div>
 
-        <!-- CONTACT PAGE (Restored Grid Layout) -->
+        <!-- CONTACT PAGE -->
         <div id="contact" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="grid md:grid-cols-2 gap-16">
+                    <!-- Form Side -->
                     <div class="reveal">
                         <h3 class="text-4xl font-black tech-font uppercase mb-8">Request A <span class="text-red-600">Quote</span></h3>
-                        <form action="https://formspree.io/f/your-endpoint" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        <form id="rfq-form" class="space-y-6">
                             <div class="grid md:grid-cols-2 gap-6">
-                                <input type="text" name="name" required placeholder="Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
-                                <input type="email" name="email" required placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                                <input type="text" id="form-name" name="name" required placeholder="Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                                <input type="email" id="form-email" name="email" required placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                             </div>
                             <div class="grid md:grid-cols-2 gap-6">
-                                <input type="text" name="company" placeholder="Company Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
-                                <input type="text" name="phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                                <input type="text" id="form-company" name="company" placeholder="Company Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                                <input type="text" id="form-phone" name="phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-xs uppercase tracking-widest font-bold text-slate-500">Attach Blueprints (STEP, PDF, DXF)</label>
                                 <div class="file-input-wrapper border-2 border-dashed border-white/10 hover:border-red-600/50 transition p-8 text-center bg-white/5 cursor-pointer">
                                     <div id="file-list-display"><p class="text-sm text-slate-400">Click or drag files here to upload</p></div>
-                                    <input type="file" name="attachments[]" multiple onchange="updateFileName(this)">
+                                    <input type="file" id="form-file" name="attachments[]" multiple onchange="updateFileName(this)">
                                 </div>
                             </div>
-                            <textarea name="message" rows="4" placeholder="Briefly describe your requirements..." class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white"></textarea>
-                            <button type="submit" class="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-3 shadow-lg shadow-red-600/20">
+                            <textarea id="form-message" name="message" rows="4" placeholder="Briefly describe your requirements..." class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white"></textarea>
+                            <button type="submit" id="submit-btn" class="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-3 shadow-lg shadow-red-600/20">
                                 Send Inquiry <i class="fas fa-paper-plane"></i>
                             </button>
                         </form>
+                        <div id="form-response" class="hidden mt-4 p-4 text-center rounded bg-green-500/10 border border-green-500/30 text-green-500 tech-font uppercase text-xs">Request Transmitted Successfully</div>
                     </div>
+                    <!-- Info Side -->
                     <div class="reveal space-y-10" style="transition-delay: 0.2s">
                         <div>
                             <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Facility Location</h4>
-                            <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd,<br>Lynnville, TN 38472</p>
+                            <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd, Lynnville, TN 38472</p>
                         </div>
                         <div>
                             <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Direct Contact</h4>
@@ -475,12 +558,15 @@
                         <p id="game-phase-text" class="text-slate-400 text-[10px] uppercase tracking-[0.3em]">System Standby</p>
                         <div id="game-container" class="rounded-lg shadow-2xl relative">
                             <canvas id="game-canvas"></canvas>
+                            
                             <div id="game-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-20 transition-opacity duration-500">
                                 <div id="game-message" class="mb-6 tech-font text-white uppercase text-center hidden"></div>
                                 <button id="start-game-btn" class="px-10 py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition transform hover:scale-105">Initiate Machining</button>
                                 <p class="mt-4 text-[8px] text-slate-600 uppercase tracking-widest">Manual Override Active</p>
                             </div>
+
                             <div id="arm-indicator" class="hidden">Safety Lock: Move Cursor to Green Start Zone</div>
+                            
                             <div id="game-stats" class="absolute top-6 left-6 grid grid-cols-2 gap-x-12 gap-y-4 text-left z-10 pointer-events-none hidden">
                                 <div><div class="dro-label">X-Axis</div><div id="x-axis-display" class="dro-value">0.0000</div></div>
                                 <div><div class="dro-label">Y-Axis</div><div id="y-axis-display" class="dro-value">0.0000</div></div>
@@ -502,6 +588,7 @@
     </footer>
 
     <script>
+        // NAVIGATION
         function navigateTo(pageId) {
             document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
             const targetPage = document.getElementById(pageId);
@@ -517,6 +604,7 @@
             });
         }
 
+        // REVEAL ANIMATIONS
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -528,6 +616,7 @@
         window.addEventListener("scroll", reveal);
         window.onload = reveal;
 
+        // FILE UPLOAD VISUALS
         function updateFileName(input) {
             let listDisplay = document.getElementById('file-list-display');
             if (input.files.length === 0) {
@@ -540,6 +629,67 @@
                 listDisplay.innerHTML = html;
             }
         }
+
+        // GOOGLE BACKEND HANDLER (FREE FILE UPLOAD)
+        const rfqForm = document.getElementById('rfq-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const responseMsg = document.getElementById('form-response');
+
+        rfqForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Uploading Project Data... <i class="fas fa-sync fa-spin ml-2"></i>';
+
+            const fileInput = document.getElementById('form-file');
+            let fileData = null;
+            let fileName = null;
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileName = file.name;
+                fileData = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => resolve(event.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            const payload = {
+                name: document.getElementById('form-name').value,
+                email: document.getElementById('form-email').value,
+                company: document.getElementById('form-company').value,
+                phone: document.getElementById('form-phone').value,
+                message: document.getElementById('form-message').value,
+                fileName: fileName,
+                fileData: fileData
+            };
+
+            try {
+                // YOUR WEB APP ID APPLIED
+                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdD2bXdqqr4S3ZCo9VJVh5keb-ffneM7Y5fd6VC0YXaEJo4EXDIXL6jmYefcnS67FBTA/exec'; 
+                
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Cross-Domain Apps Script requires no-cors for simple fetch
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                rfqForm.reset();
+                document.getElementById('file-list-display').innerHTML = '<p class="text-sm text-slate-400">Click or drag files here to upload</p>';
+                submitBtn.innerHTML = 'Transmission Successful <i class="fas fa-check ml-2"></i>';
+                responseMsg.classList.remove('hidden');
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Inquiry <i class="fas fa-paper-plane"></i>';
+                    responseMsg.classList.add('hidden');
+                }, 5000);
+
+            } catch (err) {
+                submitBtn.innerHTML = 'Upload Error - Please Email Directly';
+                submitBtn.classList.replace('bg-red-600', 'bg-orange-600');
+            }
+        });
 
         // BACKGROUND PARTICLES
         const canvas = document.getElementById('particle-canvas');
@@ -630,6 +780,7 @@
             gctx.beginPath(); gctx.moveTo(path[0].x, path[0].y);
             path.forEach(p => gctx.lineTo(p.x, p.y)); gctx.stroke();
 
+            // PULSATING END POINT INDICATOR
             if (isArmed) {
                 gctx.strokeStyle = '#ED1C24'; gctx.lineWidth = 1; gctx.beginPath();
                 const endP = path[path.length - 1]; const pulseR = 10 + Math.sin(Date.now()/150)*5;
@@ -689,6 +840,7 @@
 
         startBtn.onclick = () => { isGameRunning = true; isArmed = false; gameOverlay.classList.add('hidden'); gameStats.classList.remove('hidden'); initGame(); drawGame(); };
         gameCanvas.onmousemove = (e) => { const rect = gameCanvas.getBoundingClientRect(); targetX = e.clientX - rect.left; targetY = e.clientY - rect.top; };
+        
         initParticles(); animateParticles();
     </script>
 </body>
