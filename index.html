@@ -177,11 +177,6 @@
             padding: 4px 10px;
             animation: pulse 1s infinite;
         }
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
     </style>
 </head>
 <body class="bg-black text-slate-100 selection:bg-red-600 selection:text-white">
@@ -420,7 +415,7 @@
             </div>
         </div>
 
-        <!-- INDUSTRIES PAGE (Locked) -->
+        <!-- INDUSTRIES PAGE -->
         <div id="industries" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto text-center mb-16">
                 <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Market Focus</h2>
@@ -630,7 +625,7 @@
             }
         }
 
-        // GOOGLE BACKEND HANDLER (FREE FILE UPLOAD)
+        // GOOGLE BACKEND HANDLER (SUPPORT MULTIPLE FILES)
         const rfqForm = document.getElementById('rfq-form');
         const submitBtn = document.getElementById('submit-btn');
         const responseMsg = document.getElementById('form-response');
@@ -641,17 +636,19 @@
             submitBtn.innerHTML = 'Uploading Project Data... <i class="fas fa-sync fa-spin ml-2"></i>';
 
             const fileInput = document.getElementById('form-file');
-            let fileData = null;
-            let fileName = null;
+            const filesData = [];
 
+            // Process all selected files
             if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                fileName = file.name;
-                fileData = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (event) => resolve(event.target.result);
-                    reader.readAsDataURL(file);
-                });
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    const file = fileInput.files[i];
+                    const base64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (event) => resolve(event.target.result);
+                        reader.readAsDataURL(file);
+                    });
+                    filesData.push({ name: file.name, data: base64 });
+                }
             }
 
             const payload = {
@@ -660,17 +657,15 @@
                 company: document.getElementById('form-company').value,
                 phone: document.getElementById('form-phone').value,
                 message: document.getElementById('form-message').value,
-                fileName: fileName,
-                fileData: fileData
+                files: filesData
             };
 
             try {
-                // YOUR WEB APP ID APPLIED
                 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdD2bXdqqr4S3ZCo9VJVh5keb-ffneM7Y5fd6VC0YXaEJo4EXDIXL6jmYefcnS67FBTA/exec'; 
                 
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Cross-Domain Apps Script requires no-cors for simple fetch
+                    mode: 'no-cors',
                     body: JSON.stringify(payload),
                     headers: { 'Content-Type': 'application/json' }
                 });
@@ -769,11 +764,9 @@
         function drawGame() {
             if (!isGameRunning) return;
             gctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-            
             gctx.strokeStyle = 'rgba(255,255,255,0.03)'; gctx.lineWidth = 1;
             for(let i=0; i<gameCanvas.width; i+=40) { gctx.beginPath(); gctx.moveTo(i,0); gctx.lineTo(i,gameCanvas.height); gctx.stroke(); }
             for(let i=0; i<gameCanvas.height; i+=40) { gctx.beginPath(); gctx.moveTo(0,i); gctx.lineTo(gameCanvas.width,i); gctx.stroke(); }
-            
             gctx.strokeStyle = currentPhase === 3 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.08)';
             gctx.lineWidth = maxTolerance * 2;
             gctx.lineJoin = 'round'; gctx.lineCap = 'round';
