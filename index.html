@@ -136,7 +136,7 @@
     <nav class="fixed w-full z-50 bg-black/95 backdrop-blur-lg border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center transition-transform hover:scale-105">
-                <img src="MAG7 LOGO.jpg" alt="Mag 7 Machining" class="h-14 md:h-16 w-auto object-contain" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
+                <img src="MAG7 LOGO.png" alt="Mag 7 Machining" class="h-14 md:h-16 w-auto object-contain" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
                 <div id="logo-fallback" class="hidden items-center space-x-3">
                     <div class="relative w-10 h-8 bg-red-600 clip-path-m flex items-center justify-center">
                         <span class="text-black font-black tech-font text-xs mb-1">M7</span>
@@ -152,7 +152,6 @@
                 <a href="javascript:void(0)" onclick="navigateTo('home')" class="nav-link hover:text-red-600 transition py-2 text-red-600" data-page="home">Home</a>
                 <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="nav-link hover:text-red-600 transition py-2" data-page="capabilities">Capabilities</a>
                 <a href="javascript:void(0)" onclick="navigateTo('industries')" class="nav-link hover:text-red-600 transition py-2" data-page="industries">Industries</a>
-                <a href="javascript:void(0)" onclick="navigateTo('gallery')" class="nav-link hover:text-red-600 transition py-2" data-page="gallery">Gallery</a>
                 <a href="javascript:void(0)" onclick="navigateTo('about')" class="nav-link hover:text-red-600 transition py-2" data-page="about">About Us</a>
                 <a href="javascript:void(0)" onclick="navigateTo('contact')" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-sm transition text-white shadow-lg shadow-red-600/20 ml-4">Request Quote</a>
             </div>
@@ -353,9 +352,10 @@ M1<br>
                     <h3 class="text-5xl font-black tech-font uppercase">Industries We Serve</h3>
                 </div>
                 <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Medical -->
                     <div class="reveal card-blur overflow-hidden group">
                         <div class="h-64 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1583912267550-d44d7a125824?auto=format&fit=crop&w=800&q=80" alt="Medical" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                            <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Medical Cervical Plate Machining" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                             <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Medical</h4></div>
                         </div>
@@ -367,7 +367,8 @@ M1<br>
                             </ul>
                         </div>
                     </div>
-                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
+                    <!-- Aerospace -->
+                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.1s">
                         <div class="h-64 overflow-hidden relative">
                             <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
@@ -377,27 +378,39 @@ M1<br>
                             <p class="text-slate-400">Complex airframe and jet engine components with extreme accuracy.</p>
                             <ul class="text-sm text-slate-500 space-y-2">
                                 <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Engine Components</li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Aviation Prototypes</li>
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Structural Airframe Parts</li>
                             </ul>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- GALLERY PAGE -->
-        <div id="gallery" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto text-center">
-                <h3 class="text-5xl font-black tech-font uppercase mb-16">Work Samples</h3>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="reveal aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    <!-- Automotive -->
+                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
+                        <div class="h-64 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=800&q=80" alt="Automotive" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Automotive</h4></div>
+                        </div>
+                        <div class="p-8 space-y-4">
+                            <p class="text-slate-400">High-performance CNC solutions for racing and custom vehicle development.</p>
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Performance Suspension Units</li>
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Engine Block Machining</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="reveal aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group" style="transition-delay: 0.1s">
-                        <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
-                    </div>
-                    <div class="reveal aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group" style="transition-delay: 0.2s">
-                        <img src="https://images.unsplash.com/photo-1581093450021-4a7360e9a6ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
+                    <!-- Defense -->
+                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.3s">
+                        <div class="h-64 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Defense" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Defense</h4></div>
+                        </div>
+                        <div class="p-8 space-y-4">
+                            <p class="text-slate-400">Rugged tactical hardware and ITAR-compliant manufacturing.</p>
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> ITAR Certified Workflow</li>
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Tactical Housing Units</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -440,7 +453,6 @@ M1<br>
                             <input type="text" name="phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                         </div>
                         
-                        <!-- RE-ENHANCED FILE UPLOAD BOX -->
                         <div class="space-y-2">
                             <label class="text-xs uppercase tracking-widest font-bold text-slate-500">Attach Blueprints / 3D Models (STEP, PDF, DXF)</label>
                             <div class="file-input-wrapper border-2 border-dashed border-white/10 hover:border-red-600/50 transition p-8 text-center bg-white/5 cursor-pointer">
@@ -466,7 +478,6 @@ M1<br>
                     <div>
                         <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Contact</h4>
                         <p class="text-slate-400 font-bold tracking-wider text-xl">+1 (931) 424-8841</p>
-                        <!-- Updated Email to mailto: link -->
                         <a href="mailto:rfq@mag7machining.com" class="text-slate-400 font-light underline decoration-red-600/30 hover:text-red-600 transition block">rfq@mag7machining.com</a>
                     </div>
                     <div class="p-6 bg-white/5 border border-white/5 rounded-sm">
@@ -483,11 +494,10 @@ M1<br>
 
     <footer class="bg-black pt-20 pb-10 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <img src="MAG7 LOGO.jpg" alt="Logo" class="h-12 w-auto mx-auto mb-6 grayscale hover:grayscale-0 transition">
+            <img src="MAG7 LOGO.png" alt="Logo" class="h-12 w-auto mx-auto mb-6 grayscale hover:grayscale-0 transition">
             <div class="flex justify-center gap-6 mb-8 text-[10px] uppercase font-bold tracking-widest text-slate-600">
                 <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="hover:text-white transition">Capabilities</a>
                 <a href="javascript:void(0)" onclick="navigateTo('industries')" class="hover:text-white transition">Industries</a>
-                <a href="javascript:void(0)" onclick="navigateTo('gallery')" class="hover:text-white transition">Gallery</a>
                 <a href="javascript:void(0)" onclick="navigateTo('about')" class="hover:text-white transition">Story</a>
             </div>
             <p class="text-slate-600 text-[10px] uppercase tracking-[0.2em]">&copy; 2026 Mag 7 Machining, LLC. | Lynnville, TN</p>
@@ -522,7 +532,6 @@ M1<br>
         window.addEventListener("scroll", reveal);
         window.onload = reveal;
 
-        // UPDATED FILE UPLOAD LIST HELPER
         function updateFileName(input) {
             let listDisplay = document.getElementById('file-list-display');
             if (input.files.length === 0) {
