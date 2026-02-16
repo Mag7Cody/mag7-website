@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Orbitron:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap');
         
         :root {
             --mag7-red: #ED1C24;
@@ -17,36 +17,90 @@
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            background: #000;
         }
 
         .tech-font { font-family: 'Orbitron', sans-serif; }
 
         .hero-gradient {
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1614030424754-24d9e9653069?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
+        }
+
+        /* Bold Mag 7 Red G-Code HUD */
+        .g-code-hud {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 15px; 
+            font-weight: 900; 
+            color: var(--mag7-red);
+            padding: 120px 40px;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            display: none;
+        }
+
+        .g-code-scroll {
+            display: flex;
+            flex-direction: column;
+            animation: scrollCode 60s linear infinite;
+        }
+
+        @keyframes scrollCode {
+            from { transform: translateY(0); }
+            to { transform: translateY(-50%); }
+        }
+
+        @media (min-width: 1024px) { .g-code-hud { display: block; } }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 1;
         }
 
         .card-blur {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(237, 28, 36, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .swoop-accent {
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            border: 1px solid rgba(237, 28, 36, 0.05);
-            border-radius: 50%;
-            top: -25%;
-            left: -25%;
-            pointer-events: none;
+        .card-blur:hover {
+            border-color: var(--mag7-red);
+            background: rgba(237, 28, 36, 0.08);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px -10px rgba(237, 28, 36, 0.3);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .page-content {
             display: none;
-            animation: fadeIn 0.5s ease-out forwards;
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
         .page-content.active {
@@ -54,11 +108,26 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .clip-path-m { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 70%, 0% 100%); }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-input-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-black text-slate-100 selection:bg-red-600 selection:text-white">
@@ -79,61 +148,157 @@
                 </div>
             </a>
 
-            <!-- Navigation Links -->
             <div class="hidden lg:flex space-x-6 text-[10px] font-bold uppercase tracking-[0.2em]">
                 <a href="javascript:void(0)" onclick="navigateTo('home')" class="nav-link hover:text-red-600 transition py-2 text-red-600" data-page="home">Home</a>
                 <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="nav-link hover:text-red-600 transition py-2" data-page="capabilities">Capabilities</a>
-                <a href="javascript:void(0)" onclick="navigateTo('facility')" class="nav-link hover:text-red-600 transition py-2" data-page="facility">Facility List</a>
+                <a href="javascript:void(0)" onclick="navigateTo('industries')" class="nav-link hover:text-red-600 transition py-2" data-page="industries">Industries</a>
                 <a href="javascript:void(0)" onclick="navigateTo('gallery')" class="nav-link hover:text-red-600 transition py-2" data-page="gallery">Gallery</a>
                 <a href="javascript:void(0)" onclick="navigateTo('about')" class="nav-link hover:text-red-600 transition py-2" data-page="about">About Us</a>
                 <a href="javascript:void(0)" onclick="navigateTo('contact')" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-sm transition text-white shadow-lg shadow-red-600/20 ml-4">Request Quote</a>
             </div>
             
-            <button class="lg:hidden text-2xl text-red-600"><i class="fas fa-bars"></i></button>
+            <button class="lg:hidden text-2xl text-red-600" onclick="navigateTo('contact')"><i class="fas fa-bars"></i></button>
         </div>
     </nav>
 
-    <!-- Main Content Area -->
     <main class="pt-20">
-
         <!-- HOME PAGE -->
         <div id="home" class="page-content active">
             <header class="hero-gradient min-h-[90vh] flex items-center relative overflow-hidden">
-                <div class="swoop-accent"></div>
+                <!-- Animated G-Code Overlay HUD (Mag 7 Red) -->
+                <div class="g-code-hud">
+                    <div class="g-code-scroll">
+(**** TOOL HEAD TOOLS ****)<br>
+(T001 OD TURN - 55 )<br>
+(T002 OD GROOVE .125 )<br>
+(T003 CENTER DRILL  0.0938)<br>
+(T004 DRILL 1/8-Z  0.125)<br>
+(T005 MILL 1/8 - Z  0.125)<br>
+(T006 MILL 1/4 - Z  0.25)<br>
+(T007 FACE MILL  1.75)<br>
+(T008 SLANTED END MILL  0.25)<br>
+(T009 SPOT DRILL .5  0.5)<br>
+(T010 DRILL .375  0.375)<br>
+(T011 MILL 1/8 - X  0.125)<br>
+(T012 CUT-OFF )<br>
+  <br>
+G95 G90 G80 G64 G49 G40 G18 G0<br>
+G10.9 X1. (X DIAM)<br>
+G53 G0 X0 Y0<br>
+G53 Z0<br>
+G53 W0<br>
+M108<br>
+G53 B0.0<br>
+M107<br>
+  <br>
+N01 (TOOL 001 TURN FACE)<br>
+G90 G80 G64 G49 G18 G0<br>
+G10.9 X1. (DIAM PROGRAM)<br>
+G53 X0 Y0<br>
+G53 Z5.0 (TCH Z)<br>
+T001.1   M6 (OD TURN - 55)<br>
+M1<br>
+M901 (MAIN)<br>
+M202 (MAIN SPINDLE TURN MODE)<br>
+M108 (UNCLAMP B)<br>
+G53 G0 B90.0<br>
+M107 (CLAMP B)<br>
+G95 G54 G18 G0 <br>
+G97 S669 M203<br>
+M8 (STD COOL HEAD)<br>
+G0 G95 X3.35 Z0.1<br>
+G92 S1600 R1<br>
+G96 S560 R1<br>
+X3.1376 <br>
+Z0.<br>
+G1 X2.9376 F0.01088<br>
+X-0.0624 <br>
+X-0.2624 <br>
+G0 X3.35 Z0.1<br>
+  <br>
+N02 (TURN OD TURN 1)<br>
+Z0.05<br>
+G96 S560 R1<br>
+X3.05 <br>
+G1 Z-3.0312 <br>
+X3.35 <br>
+G0 Z0.05<br>
+X2.85 <br>
+G1 Z-1.1208 <br>
+X3.0127 Z-1.2741 <br>
+G3 X3.02 Z-1.2887 R0.0312 <br>
+G1 Z-3.0312 <br>
+X3.05 <br>
+X3.1207 Z-2.9958 <br>
+G0 Z0.05<br>
+X2.65 <br>
+G1 Z-0.9325 <br>
+X2.85 Z-1.1208 <br>
+X2.9207 Z-1.0855 <br>
+G0 Z0.05<br>
+X2.45 <br>
+G1 Z-0.7441 <br>
+X2.65 Z-0.9325 <br>
+X2.7207 Z-0.8971 <br>
+G0 Z0.05<br>
+X2.25 <br>
+G1 Z-0.5557 <br>
+X2.45 Z-0.7441 <br>
+X2.5207 Z-0.7087 <br>
+G0 Z0.05<br>
+X2.05 <br>
+G1 Z-0.5 <br>
+X2.1533 <br>
+G3 X2.2084 Z-0.5166 R0.0312 <br>
+G1 X2.25 Z-0.5557 <br>
+X2.3207 Z-0.5204 <br>
+G0 Z0.05<br>
+X2.02 <br>
+G1 Z-0.5 <br>
+X2.05 <br>
+X2.1207 Z-0.4646 <br>
+G0 X3.35 <br>
+Z0.05<br>
+M9 (ALL COOL OFF HEAD)<br>
+G49<br>
+G90 G53 X0 Y0<br>
+G53 Z0<br>
+M108<br>
+G53 B0.0<br>
+M1<br>
+                    </div>
+                </div>
+                <canvas id="particle-canvas"></canvas>
                 <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 relative z-10">
                     <div class="space-y-8">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 rounded-full text-red-500 text-xs font-bold tracking-widest uppercase">
+                        <div class="reveal inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 rounded-full text-red-500 text-xs font-bold tracking-widest uppercase">
                             <span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
                             Est. 1995 | Lynnville, TN
                         </div>
-                        <h1 class="text-5xl md:text-8xl font-black leading-none tech-font uppercase">
+                        <h1 class="reveal text-5xl md:text-8xl font-black leading-none tech-font uppercase">
                             Precision <br><span class="text-red-600">Defined.</span>
                         </h1>
-                        <p class="text-lg text-slate-400 max-w-xl font-light leading-relaxed border-l-2 border-red-600 pl-6">
-                            Welcome to Mag 7 Machining. We are an unshakable one-stop machine shop specializing in close-tolerance components for Aerospace, Defense, and Medical industries.
+                        <p class="reveal text-lg text-slate-400 max-w-xl font-light leading-relaxed border-l-2 border-red-600 pl-6" style="transition-delay: 0.2s">
+                            Welcome to Mag 7 Machining. We are your one-stop machine shop specializing in close-tolerance components for Aerospace, Defense, and Medical industries.
                         </p>
-                        <div class="flex flex-wrap gap-4 pt-4">
+                        <div class="reveal flex flex-wrap gap-4 pt-4" style="transition-delay: 0.4s">
                             <button onclick="navigateTo('contact')" class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-sm font-black uppercase tracking-widest transition shadow-lg shadow-red-600/20">
                                 Start A Project
                             </button>
-                            <button onclick="navigateTo('capabilities')" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm font-black uppercase tracking-widest transition">
-                                Our Capabilities
+                            <button onclick="navigateTo('industries')" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm font-black uppercase tracking-widest transition">
+                                Industries Served
                             </button>
                         </div>
-                    </div>
-                    <div class="hidden md:flex items-center justify-center relative">
-                        <i class="fas fa-cog absolute text-[24rem] text-red-600/5 rotate-90 animate-[spin_30s_linear_infinite]"></i>
-                        <img src="https://images.unsplash.com/photo-1614030424754-24d9e9653069?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Machined Part" class="relative z-10 rounded shadow-2xl grayscale hover:grayscale-0 transition-all duration-700">
                     </div>
                 </div>
             </header>
             
-            <section class="bg-red-600 py-12">
+            <section class="bg-red-600 py-12 relative z-10">
                 <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div class="border-r border-black/10"><div class="text-4xl font-black tech-font text-black">25+</div><div class="text-[10px] uppercase font-black text-black/70">Years Experience</div></div>
-                    <div class="md:border-r border-black/10"><div class="text-4xl font-black tech-font text-black">OKUMA</div><div class="text-[10px] uppercase font-black text-black/70">Certified Precision</div></div>
-                    <div class="border-r border-black/10"><div class="text-4xl font-black tech-font text-black">0.0001"</div><div class="text-[10px] uppercase font-black text-black/70">Tolerance Accuracy</div></div>
-                    <div><div class="text-4xl font-black tech-font text-black">ITAR</div><div class="text-[10px] uppercase font-black text-black/70">Ready & Compliant</div></div>
+                    <div class="reveal"><div class="text-4xl font-black tech-font text-black">30+</div><div class="text-[10px] uppercase font-black text-black/70">Years Experience</div></div>
+                    <div class="reveal" style="transition-delay: 0.1s"><div class="text-4xl font-black tech-font text-black">0.0001"</div><div class="text-[10px] uppercase font-black text-black/70">Tolerance Accuracy</div></div>
+                    <div class="reveal" style="transition-delay: 0.2s"><div class="text-4xl font-black tech-font text-black">ISO</div><div class="text-[10px] uppercase font-black text-black/70">9001:2015 Compliant</div></div>
+                    <div class="reveal" style="transition-delay: 0.3s"><div class="text-4xl font-black tech-font text-black">ITAR</div><div class="text-[10px] uppercase font-black text-black/70">Ready & Compliant</div></div>
                 </div>
             </section>
         </div>
@@ -145,86 +310,93 @@
                     <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Engineering Excellence</h2>
                     <h3 class="text-5xl font-black tech-font uppercase">Our Capabilities</h3>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="card-blur p-8 rounded-sm">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="reveal card-blur p-8 rounded-sm">
                         <div class="text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
                         <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
-                        <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, and steel.</p>
+                        <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, stainless steels, and tool steels.</p>
                     </div>
-                    <div class="card-blur p-8 rounded-sm">
+                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.1s">
+                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
+                        <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
+                        <p class="text-sm text-slate-400">High-precision lathe operations for cylindrical components, featuring multi-axis turning and extreme concentricity control.</p>
+                    </div>
+                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.2s">
+                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-microchip"></i></div>
+                        <h4 class="text-xl font-black tech-font uppercase mb-4">Swiss Machining</h4>
+                        <p class="text-sm text-slate-400">High-volume, ultra-precise turning for long, slender, and complex components required in medical and defense applications.</p>
+                    </div>
+                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.3s">
                         <div class="text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
                         <h4 class="text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
-                        <p class="text-sm text-slate-400">Precision wire erosion for hardened tools, dies, and ultra-fine intricate details.</p>
+                        <p class="text-sm text-slate-400">Precision wire EDM for hardened tools, dies, and ultra-fine intricate details that conventional machining cannot reach.</p>
                     </div>
-                    <div class="card-blur p-8 rounded-sm">
+                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.4s">
                         <div class="text-3xl text-red-600 mb-6"><i class="fas fa-drafting-compass"></i></div>
                         <h4 class="text-xl font-black tech-font uppercase mb-4">CAD/CAM</h4>
-                        <p class="text-sm text-slate-400">Fully integrated with SolidWorks and HSMWorks for seamless model-to-machine workflow.</p>
+                        <p class="text-sm text-slate-400">Fully integrated with SolidWorks and state-of-the-art CAM software for a seamless, error-free model-to-machine workflow.</p>
                     </div>
-                    <div class="card-blur p-8 rounded-sm">
+                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.5s">
                         <div class="text-3xl text-red-600 mb-6"><i class="fas fa-tools"></i></div>
                         <h4 class="text-xl font-black tech-font uppercase mb-4">Manual Machining</h4>
-                        <p class="text-sm text-slate-400">Traditional bridgeports and lathes for custom one-off parts, repairs, and quick modifications.</p>
+                        <p class="text-sm text-slate-400">Traditional Bridgeports and lathes for custom one-off parts, specialized repairs, and rapid modifications.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- FACILITY PAGE -->
-        <div id="facility" class="page-content py-20 px-6">
-            <div class="max-w-5xl mx-auto">
+        <!-- INDUSTRIES PAGE -->
+        <div id="industries" class="page-content py-20 px-6">
+            <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">The Arsenal</h2>
-                    <h3 class="text-5xl font-black tech-font uppercase">Facility List</h3>
+                    <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Market Focus</h2>
+                    <h3 class="text-5xl font-black tech-font uppercase">Industries We Serve</h3>
                 </div>
-                <div class="space-y-4">
-                    <div class="p-6 bg-white/5 border-l-4 border-red-600 flex justify-between items-center">
-                        <div>
-                            <h5 class="font-bold text-lg uppercase">Okuma LB3000 EX-II-M</h5>
-                            <p class="text-sm text-slate-500 uppercase">Live Tooling Turning Center</p>
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <div class="reveal card-blur overflow-hidden group">
+                        <div class="h-64 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1583912267550-d44d7a125824?auto=format&fit=crop&w=800&q=80" alt="Medical" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Medical</h4></div>
                         </div>
-                        <div class="text-red-600 font-bold tech-font">Qty: 1</div>
-                    </div>
-                    <div class="p-6 bg-white/5 border-l-4 border-zinc-700 flex justify-between items-center">
-                        <div>
-                            <h5 class="font-bold text-lg uppercase">Mitsubishi MV1200R</h5>
-                            <p class="text-sm text-slate-500 uppercase">Precision Wire EDM</p>
+                        <div class="p-8 space-y-4">
+                            <p class="text-slate-400">Precision titanium implants, cervical plates, and surgical instruments.</p>
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Bone Screws & Fasteners</li>
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Surgical Instrumentation</li>
+                            </ul>
                         </div>
-                        <div class="text-zinc-600 font-bold tech-font">Qty: 1</div>
                     </div>
-                    <div class="p-6 bg-white/5 border-l-4 border-zinc-700 flex justify-between items-center">
-                        <div>
-                            <h5 class="font-bold text-lg uppercase">Brother Speedio S1000X1</h5>
-                            <p class="text-sm text-slate-500 uppercase">High Speed VMC</p>
+                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
+                        <div class="h-64 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Aerospace</h4></div>
                         </div>
-                        <div class="text-zinc-600 font-bold tech-font">Qty: 1</div>
-                    </div>
-                    <div class="p-6 bg-white/5 border-l-4 border-zinc-700 flex justify-between items-center">
-                        <div>
-                            <h5 class="font-bold text-lg uppercase">Mitutoyo CMM Inspection</h5>
-                            <p class="text-sm text-slate-500 uppercase">Quality Control Laboratory</p>
+                        <div class="p-8 space-y-4">
+                            <p class="text-slate-400">Complex airframe and jet engine components with extreme accuracy.</p>
+                            <ul class="text-sm text-slate-500 space-y-2">
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Engine Components</li>
+                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Aviation Prototypes</li>
+                            </ul>
                         </div>
-                        <div class="text-zinc-600 font-bold tech-font">Qty: 1</div>
                     </div>
-                    <button class="w-full py-4 border border-red-600 text-red-600 font-black uppercase tracking-widest mt-8 hover:bg-red-600 hover:text-white transition">Download Full PDF List</button>
                 </div>
             </div>
         </div>
 
         <!-- GALLERY PAGE -->
         <div id="gallery" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-16">
-                    <h3 class="text-5xl font-black tech-font uppercase">Work Samples</h3>
-                </div>
+            <div class="max-w-7xl mx-auto text-center">
+                <h3 class="text-5xl font-black tech-font uppercase mb-16">Work Samples</h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group">
+                    <div class="reveal aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group">
                         <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
                     </div>
-                    <div class="aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group">
+                    <div class="reveal aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group" style="transition-delay: 0.1s">
                         <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
                     </div>
-                    <div class="aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group">
+                    <div class="reveal aspect-square bg-zinc-900 rounded border border-white/5 overflow-hidden group" style="transition-delay: 0.2s">
                         <img src="https://images.unsplash.com/photo-1581093450021-4a7360e9a6ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500">
                     </div>
                 </div>
@@ -233,14 +405,22 @@
 
         <!-- ABOUT PAGE -->
         <div id="about" class="page-content py-20 px-6">
-            <div class="max-w-4xl mx-auto space-y-12">
-                <div class="text-center">
-                    <h3 class="text-5xl font-black tech-font uppercase">Our Story</h3>
+            <div class="max-w-4xl mx-auto space-y-16">
+                <div class="text-center relative reveal">
+                    <h3 class="text-5xl md:text-7xl font-black tech-font uppercase tracking-tighter">Our <span class="text-red-600">Story</span></h3>
+                    <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
                 </div>
-                <div class="space-y-6 text-slate-400 text-lg font-light leading-relaxed">
-                    <p>Mag 7 Machining was founded with a simple goal: to provide uncompromising quality and precision to industrial sectors that demand excellence.</p>
-                    <p>Located in Lynnville, TN, we have grown from a small shop into a high-tech facility. Our commitment to using world-class brands like Okuma and Mitsubishi ensures that our clients receive parts that meet the tightest tolerances, every single time.</p>
-                    <p>We are more than just a vendor; we are your manufacturing partner. Our team brings over 25 years of hands-on experience in complex milling, turning, and EDM work.</p>
+                
+                <div class="space-y-8 text-slate-300 text-xl leading-relaxed tracking-wide font-light">
+                    <p class="reveal">
+                        Mag 7 Machining was founded with a singular, unshakable goal: to provide uncompromising quality and precision to industrial sectors that demand absolute excellence. 
+                    </p>
+                    <p class="reveal border-l-4 border-red-600 pl-8 py-4 italic text-slate-100 bg-white/5">
+                        Located in Lynnville, TN, we have evolved from a specialized shop into a high-tech manufacturing facility. Our commitment to world-class technology like Okuma and Mitsubishi ensures that our clients receive parts that meet the tightest tolerances.
+                    </p>
+                    <p class="reveal">
+                        We are more than just a vendor; we are your mission-critical manufacturing partner. Our team brings over <span class="text-red-600 font-bold tech-font">30+ years</span> of experience in complex milling, turning, EDM, and high production runs.
+                    </p>
                 </div>
             </div>
         </div>
@@ -248,74 +428,173 @@
         <!-- CONTACT PAGE -->
         <div id="contact" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
-                <div>
-                    <h3 class="text-4xl font-black tech-font uppercase mb-8">Get In <span class="text-red-600">Touch</span></h3>
-                    <form class="space-y-6">
+                <div class="reveal">
+                    <h3 class="text-4xl font-black tech-font uppercase mb-8">Request A <span class="text-red-600">Quote</span></h3>
+                    <form action="https://formspree.io/f/your-endpoint" method="POST" enctype="multipart/form-data" class="space-y-6">
                         <div class="grid md:grid-cols-2 gap-6">
-                            <input type="text" placeholder="Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition">
-                            <input type="email" placeholder="Email" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition">
+                            <input type="text" name="name" required placeholder="Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                            <input type="email" name="email" required placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                         </div>
-                        <input type="text" placeholder="Subject" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition">
-                        <textarea rows="6" placeholder="Project Details" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition"></textarea>
-                        <button class="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition">Send Inquiry</button>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <input type="text" name="company" placeholder="Company Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                            <input type="text" name="phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                        </div>
+                        
+                        <!-- RE-ENHANCED FILE UPLOAD BOX -->
+                        <div class="space-y-2">
+                            <label class="text-xs uppercase tracking-widest font-bold text-slate-500">Attach Blueprints / 3D Models (STEP, PDF, DXF)</label>
+                            <div class="file-input-wrapper border-2 border-dashed border-white/10 hover:border-red-600/50 transition p-8 text-center bg-white/5 cursor-pointer">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-red-600 mb-4"></i>
+                                <div id="file-list-display" class="space-y-1">
+                                    <p class="text-sm text-slate-400" id="file-instruction-text">Click or drag files here to upload</p>
+                                </div>
+                                <input type="file" name="attachments[]" id="file-upload" multiple onchange="updateFileName(this)">
+                            </div>
+                        </div>
+
+                        <textarea name="message" rows="4" placeholder="Briefly describe your requirements..." class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white"></textarea>
+                        <button type="submit" class="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-3 shadow-lg shadow-red-600/20">
+                            Send Inquiry <i class="fas fa-paper-plane"></i>
+                        </button>
                     </form>
                 </div>
-                <div class="space-y-10">
+                <div class="reveal space-y-10" style="transition-delay: 0.2s">
                     <div>
-                        <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Location</h4>
-                        <p class="text-slate-400">556 Mt Olive Cemetery Rd,<br>Lynnville, TN 38472</p>
+                        <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Facility Location</h4>
+                        <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd,<br>Lynnville, TN 38472</p>
                     </div>
                     <div>
-                        <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Phone & Email</h4>
-                        <p class="text-slate-400">+1 (931) 424-8841<br>jeff@mag7machining.com</p>
+                        <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Contact</h4>
+                        <p class="text-slate-400 font-bold tracking-wider text-xl">+1 (931) 424-8841</p>
+                        <!-- Updated Email to mailto: link -->
+                        <a href="mailto:rfq@mag7machining.com" class="text-slate-400 font-light underline decoration-red-600/30 hover:text-red-600 transition block">rfq@mag7machining.com</a>
                     </div>
-                    <div class="h-64 bg-zinc-900 border border-white/10 flex items-center justify-center grayscale">
-                        <span class="text-xs uppercase tracking-widest opacity-30">Interactive Map Placeholder</span>
+                    <div class="p-6 bg-white/5 border border-white/5 rounded-sm">
+                        <h5 class="font-bold text-[10px] uppercase tracking-widest text-red-600 mb-4">Operational Hours</h5>
+                        <ul class="text-xs space-y-3 font-light text-slate-300">
+                            <li class="flex justify-between"><span>Mon - Thu</span> <span class="text-white font-bold">7:00 AM - 5:00 PM Central</span></li>
+                            <li class="flex justify-between"><span>Friday</span> <span class="text-red-500 font-bold uppercase tracking-tighter">By Appointment</span></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <!-- Footer -->
     <footer class="bg-black pt-20 pb-10 border-t border-white/5">
-        <div class="max-w-7xl mx-auto px-6 text-center space-y-8">
-            <img src="MAG7 LOGO.jpg" alt="Logo" class="h-12 w-auto mx-auto grayscale hover:grayscale-0 transition">
-            <div class="flex justify-center space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="hover:text-red-600">Capabilities</a>
-                <a href="javascript:void(0)" onclick="navigateTo('facility')" class="hover:text-red-600">Equipment</a>
-                <a href="javascript:void(0)" onclick="navigateTo('about')" class="hover:text-red-600">Our Story</a>
-                <a href="javascript:void(0)" onclick="navigateTo('contact')" class="hover:text-red-600">Contact</a>
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <img src="MAG7 LOGO.jpg" alt="Logo" class="h-12 w-auto mx-auto mb-6 grayscale hover:grayscale-0 transition">
+            <div class="flex justify-center gap-6 mb-8 text-[10px] uppercase font-bold tracking-widest text-slate-600">
+                <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="hover:text-white transition">Capabilities</a>
+                <a href="javascript:void(0)" onclick="navigateTo('industries')" class="hover:text-white transition">Industries</a>
+                <a href="javascript:void(0)" onclick="navigateTo('gallery')" class="hover:text-white transition">Gallery</a>
+                <a href="javascript:void(0)" onclick="navigateTo('about')" class="hover:text-white transition">Story</a>
             </div>
-            <p class="text-slate-600 text-[10px] font-bold tracking-[0.2em] uppercase">
-                &copy; 2026 Mag 7 Machining, LLC. | Lynnville, TN
-            </p>
+            <p class="text-slate-600 text-[10px] uppercase tracking-[0.2em]">&copy; 2026 Mag 7 Machining, LLC. | Lynnville, TN</p>
         </div>
     </footer>
 
     <script>
         function navigateTo(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page-content').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show requested page
+            document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
             const targetPage = document.getElementById(pageId);
             if (targetPage) {
                 targetPage.classList.add('active');
                 window.scrollTo(0, 0);
+                setTimeout(reveal, 100);
             }
-
-            // Update Nav Active State
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('text-red-600');
-                if (link.getAttribute('data-page') === pageId) {
-                    link.classList.add('text-red-600');
-                }
+                if (link.getAttribute('data-page') === pageId) link.classList.add('text-red-600');
             });
         }
+
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 50) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        window.onload = reveal;
+
+        // UPDATED FILE UPLOAD LIST HELPER
+        function updateFileName(input) {
+            let listDisplay = document.getElementById('file-list-display');
+            if (input.files.length === 0) {
+                listDisplay.innerHTML = '<p class="text-sm text-slate-400" id="file-instruction-text">Click or drag files here to upload</p>';
+            } else {
+                const fileNames = Array.from(input.files).map(f => f.name);
+                let html = `<p class="text-red-600 font-black text-xs uppercase mb-2 tracking-widest">${fileNames.length} Files Selected:</p>`;
+                html += `<div class="text-white text-xs font-mono bg-black/40 p-3 space-y-1 inline-block text-left rounded border border-white/5">`;
+                fileNames.forEach(name => {
+                    html += `<div class="flex items-center gap-2"><i class="fas fa-file-code text-red-600/50"></i> ${name}</div>`;
+                });
+                html += `</div>`;
+                listDisplay.innerHTML = html;
+            }
+        }
+
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 100 };
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speedX: (Math.random() - 0.5) * 0.8,
+                    speedY: (Math.random() - 0.5) * 0.8
+                });
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+
+                let dx = mouse.x - p.x;
+                let dy = mouse.y - p.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius) {
+                    p.x -= dx / 40;
+                    p.y -= dy / 40;
+                }
+
+                ctx.fillStyle = 'rgba(237, 28, 36, 0.4)';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>
