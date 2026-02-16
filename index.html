@@ -557,6 +557,26 @@
         window.addEventListener("scroll", reveal);
         window.onload = reveal;
 
+        // FILE SELECTION VISUAL FEEDBACK (RESTORED)
+        function updateFileName(input) {
+            let listDisplay = document.getElementById('file-list-display');
+            if (!input.files || input.files.length === 0) {
+                listDisplay.innerHTML = '<p class="text-sm text-slate-400">Click or drag files here to upload</p>';
+            } else {
+                const fileNames = Array.from(input.files).map(f => f.name);
+                let html = `<div class="text-white text-xs font-mono bg-black/60 p-4 space-y-2 inline-block text-left rounded border border-white/10 shadow-2xl">`;
+                html += `<p class="text-red-600 font-black text-[10px] uppercase tracking-[0.2em] mb-2 border-b border-red-600/30 pb-1">${fileNames.length} Files Queued:</p>`;
+                fileNames.forEach(name => {
+                    html += `<div class="flex items-center gap-3 overflow-hidden">
+                                <i class="fas fa-file-code text-red-600/70 text-sm"></i> 
+                                <span class="truncate max-w-[200px]">${name}</span>
+                             </div>`;
+                });
+                html += `</div>`;
+                listDisplay.innerHTML = html;
+            }
+        }
+
         // PARTICLES (HERO)
         const particleCanvas = document.getElementById('particle-canvas');
         const pctx = particleCanvas.getContext('2d');
@@ -621,7 +641,7 @@
             }
         });
 
-        // SIMULATOR (CHIPS + QC PASSED TEXT + TRY AGAIN)
+        // SIMULATOR
         const gameCanvas = document.getElementById('game-canvas');
         const gctx = gameCanvas.getContext('2d');
         const startBtn = document.getElementById('start-game-btn');
@@ -673,13 +693,10 @@
             gctx.lineWidth = maxTolerance * 2; gctx.lineJoin = 'round'; gctx.lineCap = 'round';
             gctx.beginPath(); gctx.moveTo(path[0].x, path[0].y); path.forEach(p => gctx.lineTo(p.x, p.y)); gctx.stroke();
 
-            // Pulsating Target Circle
             if (isArmed) {
                 const endP = path[path.length - 1];
                 gctx.strokeStyle = '#ED1C24'; gctx.lineWidth = 2;
                 gctx.beginPath(); gctx.arc(endP.x, endP.y, 12 + Math.sin(Date.now()/150)*6, 0, Math.PI*2); gctx.stroke();
-                gctx.beginPath(); gctx.moveTo(endP.x-5, endP.y); gctx.lineTo(endP.x+5, endP.y); gctx.stroke();
-                gctx.beginPath(); gctx.moveTo(endP.x, endP.y-5); gctx.lineTo(endP.x, endP.y+5); gctx.stroke();
             }
 
             if (!isArmed) {
