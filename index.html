@@ -32,7 +32,7 @@
             background-position: center;
         }
 
-        /* Bold Mag 7 Red G-Code HUD */
+        /* Bold Mag 7 Red G-Code HUD - 60s Cycle */
         .g-code-hud {
             position: absolute;
             top: 0;
@@ -238,6 +238,30 @@
                         X-0.0624 <br>
                         X-0.2624 <br>
                         G0 X3.35 Z0.1<br>
+                        M30<br>
+                        (**** LOOP RESTART ****)<br>
+                        G95 G90 G80 G64 G49 G40 G18 G0<br>
+                        G10.9 X1. (X DIAM)<br>
+                        G53 G0 X0 Y0<br>
+                        G53 Z0<br>
+                        M108<br>
+                        G53 B0.0<br>
+                        M107<br>
+                        N01 (TOOL 001 TURN FACE)<br>
+                        G90 G80 G64 G49 G18 G0<br>
+                        G53 X0 Y0<br>
+                        G53 Z5.0 (TCH Z)<br>
+                        T001.1   M6 (OD TURN - 55)<br>
+                        M202 (MAIN SPINDLE TURN MODE)<br>
+                        G97 S669 M203<br>
+                        M8 (STD COOL HEAD)<br>
+                        G0 G95 X3.35 Z0.1<br>
+                        G96 S560 R1<br>
+                        Z0.<br>
+                        G1 X2.9376 F0.01088<br>
+                        X-0.0624 <br>
+                        X-0.2624 <br>
+                        G0 X3.35 Z0.1<br>
                         M30
                     </div>
                 </div>
@@ -266,7 +290,6 @@
                 </div>
             </header>
             
-            <!-- Statistics Banner (Locked: Black text on Red) -->
             <section class="bg-red-600 py-12 relative z-10">
                 <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                     <div class="reveal"><div class="text-4xl font-black tech-font text-black">30+</div><div class="text-[10px] uppercase font-black text-black/70">Years Experience</div></div>
@@ -279,85 +302,93 @@
 
         <!-- CAPABILITIES PAGE (Restored 6-card config) -->
         <div id="capabilities" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Engineering Excellence</h2>
-                    <h3 class="text-5xl font-black tech-font uppercase">Our Capabilities</h3>
+            <div class="max-w-7xl mx-auto text-center mb-16">
+                <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Engineering Excellence</h2>
+                <h3 class="text-5xl font-black tech-font uppercase">Our Capabilities</h3>
+            </div>
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="reveal card-blur p-8 rounded-sm">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
+                    <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, stainless steels, and tool steels.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="reveal card-blur p-8 rounded-sm">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
-                        <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, stainless, and tool steels.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.1s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
-                        <p class="text-sm text-slate-400">High-precision lathe operations for cylindrical components, featuring multi-axis turning and extreme concentricity.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.2s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-microchip"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">Swiss Machining</h4>
-                        <p class="text-sm text-slate-400">High-volume, ultra-precise turning for long, slender, and complex components required in medical applications.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.3s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
-                        <p class="text-sm text-slate-400">Precision wire EDM for hardened tools, dies, and ultra-fine intricate details conventional machining cannot reach.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.4s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-drafting-compass"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">CAD/CAM</h4>
-                        <p class="text-sm text-slate-400">Fully integrated with state-of-the-art CAM software for a seamless, error-free model-to-machine workflow.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.5s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-tools"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">Manual Machining</h4>
-                        <p class="text-sm text-slate-400">Traditional Bridgeports and lathes for custom one-off parts, specialized repairs, and rapid modifications.</p>
-                    </div>
+                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.1s">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
+                    <p class="text-sm text-slate-400">High-precision lathe operations for cylindrical components, featuring multi-axis turning and extreme concentricity control.</p>
+                </div>
+                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.2s">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-microchip"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">Swiss Machining</h4>
+                    <p class="text-sm text-slate-400">High-volume, ultra-precise turning for long, slender, and complex components required in medical and defense applications.</p>
+                </div>
+                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.3s">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
+                    <p class="text-sm text-slate-400">Precision wire EDM for hardened tools, dies, and ultra-fine intricate details that conventional machining cannot reach.</p>
+                </div>
+                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.4s">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-drafting-compass"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">CAD/CAM</h4>
+                    <p class="text-sm text-slate-400">Fully integrated with SolidWorks and state-of-the-art CAM software for a seamless, error-free model-to-machine workflow.</p>
+                </div>
+                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.5s">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-tools"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">Manual Machining</h4>
+                    <p class="text-sm text-slate-400">Traditional Bridgeports and lathes for custom one-off parts, specialized repairs, and rapid modifications.</p>
                 </div>
             </div>
         </div>
 
         <!-- INDUSTRIES PAGE (Locked: Automotive/Defense Tiles) -->
         <div id="industries" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Market Focus</h2>
-                    <h3 class="text-5xl font-black tech-font uppercase">Industries We Serve</h3>
+            <div class="max-w-7xl mx-auto text-center mb-16">
+                <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Market Focus</h2>
+                <h3 class="text-5xl font-black tech-font uppercase">Industries We Serve</h3>
+            </div>
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 lg:gap-12">
+                <!-- Medical -->
+                <div class="reveal card-blur overflow-hidden group">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Medical Cervical Plate" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Medical</h4></div>
+                    </div>
+                    <div class="p-8 space-y-4">
+                        <p class="text-slate-400">Specializing in the manufacturing of high-precision orthopedic implants, including titanium cervical plates, bone screws, and specialized surgical instrumentation. We understand the critical nature of surface finish and dimensional stability in medical applications.</p>
+                    </div>
                 </div>
-                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                    <div class="reveal card-blur overflow-hidden group">
-                        <div class="h-64 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Medical Cervical Plate Machining" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Medical</h4></div>
-                        </div>
-                        <div class="p-8"><p class="text-slate-400">Precision cervical plates and surgical tools.</p></div>
+                <!-- Aerospace -->
+                <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.1s">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Aerospace</h4></div>
                     </div>
-                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.1s">
-                        <div class="h-64 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Aerospace</h4></div>
-                        </div>
-                        <div class="p-8"><p class="text-slate-400">Structural airframe components.</p></div>
+                    <div class="p-8 space-y-4">
+                        <p class="text-slate-400">Providing flight-critical components for commercial and military aircraft. Our expertise covers intricate structural airframe parts, jet engine components, and high-concentricity fasteners machined from exotic alloys like Titanium and Inconel.</p>
                     </div>
-                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
-                        <div class="h-64 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=800&q=80" alt="Automotive" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Automotive</h4></div>
-                        </div>
-                        <div class="p-8"><p class="text-slate-400">Performance racing components.</p></div>
+                </div>
+                <!-- Automotive -->
+                <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=800&q=80" alt="Automotive" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Automotive</h4></div>
                     </div>
-                    <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.3s">
-                        <div class="h-64 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Defense" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-                            <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Defense</h4></div>
-                        </div>
-                        <div class="p-8"><p class="text-slate-400">ITAR-compliant manufacturing.</p></div>
+                    <div class="p-8 space-y-4">
+                        <p class="text-slate-400">Delivering high-performance CNC solutions for the professional racing and aftermarket automotive sectors. We specialize in custom engine blocks, suspension assemblies, and lightweight powertrain components engineered for extreme durability.</p>
+                    </div>
+                </div>
+                <!-- Defense -->
+                <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.3s">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Defense" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Defense</h4></div>
+                    </div>
+                    <div class="p-8 space-y-4">
+                        <p class="text-slate-400">ITAR-compliant manufacturing of rugged tactical hardware and electronic housings. We provide mission-critical components for communications systems, military-grade optics, and advanced defense equipment with strict security protocols.</p>
                     </div>
                 </div>
             </div>
@@ -389,7 +420,6 @@
         <div id="contact" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="grid md:grid-cols-2 gap-16">
-                    <!-- Form Side -->
                     <div class="reveal">
                         <h3 class="text-4xl font-black tech-font uppercase mb-8">Request A <span class="text-red-600">Quote</span></h3>
                         <form action="https://formspree.io/f/your-endpoint" method="POST" enctype="multipart/form-data" class="space-y-6">
@@ -414,11 +444,10 @@
                             </button>
                         </form>
                     </div>
-                    <!-- Info Side -->
                     <div class="reveal space-y-10" style="transition-delay: 0.2s">
                         <div>
                             <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Facility Location</h4>
-                            <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd, Lynnville, TN 38472</p>
+                            <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd,<br>Lynnville, TN 38472</p>
                         </div>
                         <div>
                             <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Direct Contact</h4>
@@ -482,7 +511,12 @@
                 setTimeout(reveal, 100);
                 if (pageId === 'contact') initGame();
             }
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('text-red-600');
+                if (link.getAttribute('data-page') === pageId) link.classList.add('text-red-600');
+            });
         }
+
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -585,15 +619,17 @@
         function drawGame() {
             if (!isGameRunning) return;
             gctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            
             gctx.strokeStyle = 'rgba(255,255,255,0.03)'; gctx.lineWidth = 1;
             for(let i=0; i<gameCanvas.width; i+=40) { gctx.beginPath(); gctx.moveTo(i,0); gctx.lineTo(i,gameCanvas.height); gctx.stroke(); }
             for(let i=0; i<gameCanvas.height; i+=40) { gctx.beginPath(); gctx.moveTo(0,i); gctx.lineTo(gameCanvas.width,i); gctx.stroke(); }
+            
             gctx.strokeStyle = currentPhase === 3 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.08)';
-            gctx.lineWidth = maxTolerance * 2; gctx.lineJoin = 'round'; gctx.lineCap = 'round';
+            gctx.lineWidth = maxTolerance * 2;
+            gctx.lineJoin = 'round'; gctx.lineCap = 'round';
             gctx.beginPath(); gctx.moveTo(path[0].x, path[0].y);
             path.forEach(p => gctx.lineTo(p.x, p.y)); gctx.stroke();
 
-            // PULSATING END POINT INDICATOR
             if (isArmed) {
                 gctx.strokeStyle = '#ED1C24'; gctx.lineWidth = 1; gctx.beginPath();
                 const endP = path[path.length - 1]; const pulseR = 10 + Math.sin(Date.now()/150)*5;
