@@ -56,7 +56,6 @@
         .g-code-scroll {
             display: flex;
             flex-direction: column;
-            /* 60s technical crawl */
             animation: scrollCode 60s linear infinite;
         }
 
@@ -133,6 +132,51 @@
             opacity: 0;
             cursor: pointer;
         }
+
+        /* Simulator Styles */
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            height: 400px;
+            margin: 0 auto;
+            background: #050505;
+            border: 1px solid #222;
+            overflow: hidden;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        #game-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .vibration { animation: vibrate 0.05s infinite; }
+        @keyframes vibrate {
+            0% { transform: translate(0,0); }
+            25% { transform: translate(2px, 2px); }
+            50% { transform: translate(-2px, 0); }
+            75% { transform: translate(0, -2px); }
+            100% { transform: translate(0,0); }
+        }
+        .dro-label { font-size: 8px; color: #ED1C24; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .dro-value { font-family: 'Orbitron', sans-serif; font-size: 14px; color: #fff; line-height: 1; }
+        
+        #arm-indicator {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            color: #00ff00;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            pointer-events: none;
+            z-index: 5;
+            border: 1px solid #00ff00;
+            padding: 4px 10px;
+            animation: pulse 1s infinite;
+        }
     </style>
 </head>
 <body class="bg-black text-slate-100 selection:bg-red-600 selection:text-white">
@@ -169,107 +213,32 @@
         <!-- HOME PAGE -->
         <div id="home" class="page-content active">
             <header class="hero-gradient min-h-[90vh] flex items-center relative overflow-hidden">
-                <!-- Animated G-Code Overlay HUD (Mag 7 Red) -->
                 <div class="g-code-hud">
                     <div class="g-code-scroll">
-                        (**** TOOL HEAD TOOLS ****)<br>
-                        (T001 OD TURN - 55 )<br>
-                        (T002 OD GROOVE .125 )<br>
-                        (T003 CENTER DRILL  0.0938)<br>
-                        (T004 DRILL 1/8-Z  0.125)<br>
-                        (T005 MILL 1/8 - Z  0.125)<br>
-                        (T006 MILL 1/4 - Z  0.25)<br>
-                        (T007 FACE MILL  1.75)<br>
-                        (T008 SLANTED END MILL  0.25)<br>
-                        (T009 SPOT DRILL .5  0.5)<br>
-                        (T010 DRILL .375  0.375)<br>
-                        (T011 MILL 1/8 - X  0.125)<br>
-                        (T012 CUT-OFF )<br>
-                          <br>
+                        (**** START MAG7 SESSION ****)<br>
                         G95 G90 G80 G64 G49 G40 G18 G0<br>
                         G10.9 X1. (X DIAM)<br>
                         G53 G0 X0 Y0<br>
                         G53 Z0<br>
-                        G53 W0<br>
                         M108<br>
                         G53 B0.0<br>
                         M107<br>
-                          <br>
                         N01 (TOOL 001 TURN FACE)<br>
                         G90 G80 G64 G49 G18 G0<br>
-                        G10.9 X1. (DIAM PROGRAM)<br>
                         G53 X0 Y0<br>
                         G53 Z5.0 (TCH Z)<br>
-                        T001.1   M6 (OD TURN - 55)<br>
-                        M1<br>
-                        M901 (MAIN)<br>
+                        T001.1   M6 (OD TURN - 55)<br>
                         M202 (MAIN SPINDLE TURN MODE)<br>
-                        M108 (UNCLAMP B)<br>
-                        G53 G0 B90.0<br>
-                        M107 (CLAMP B)<br>
-                        G95 G54 G18 G0 <br>
                         G97 S669 M203<br>
                         M8 (STD COOL HEAD)<br>
                         G0 G95 X3.35 Z0.1<br>
-                        G92 S1600 R1<br>
                         G96 S560 R1<br>
-                        X3.1376 <br>
                         Z0.<br>
                         G1 X2.9376 F0.01088<br>
                         X-0.0624 <br>
                         X-0.2624 <br>
                         G0 X3.35 Z0.1<br>
-                          <br>
-                        N02 (TURN OD TURN 1)<br>
-                        Z0.05<br>
-                        G96 S560 R1<br>
-                        X3.05 <br>
-                        G1 Z-3.0312 <br>
-                        X3.35 <br>
-                        G0 Z0.05<br>
-                        X2.85 <br>
-                        G1 Z-1.1208 <br>
-                        X3.0127 Z-1.2741 <br>
-                        G3 X3.02 Z-1.2887 R0.0312 <br>
-                        G1 Z-3.0312 <br>
-                        X3.05 <br>
-                        X3.1207 Z-2.9958 <br>
-                        G0 Z0.05<br>
-                        X2.65 <br>
-                        G1 Z-0.9325 <br>
-                        X2.85 Z-1.1208 <br>
-                        X2.9207 Z-1.0855 <br>
-                        G0 Z0.05<br>
-                        X2.45 <br>
-                        G1 Z-0.7441 <br>
-                        X2.65 Z-0.9325 <br>
-                        X2.7207 Z-0.8971 <br>
-                        G0 Z0.05<br>
-                        X2.25 <br>
-                        G1 Z-0.5557 <br>
-                        X2.45 Z-0.7441 <br>
-                        X2.5207 Z-0.7087 <br>
-                        G0 Z0.05<br>
-                        X2.05 <br>
-                        G1 Z-0.5 <br>
-                        X2.1533 <br>
-                        G3 X2.2084 Z-0.5166 R0.0312 <br>
-                        G1 X2.25 Z-0.5557 <br>
-                        X2.3207 Z-0.5204 <br>
-                        G0 Z0.05<br>
-                        X2.02 <br>
-                        G1 Z-0.5 <br>
-                        X2.05 <br>
-                        X2.1207 Z-0.4646 <br>
-                        G0 X3.35 <br>
-                        Z0.05<br>
-                        M9 (ALL COOL OFF HEAD)<br>
-                        G49<br>
-                        G90 G53 X0 Y0<br>
-                        G53 Z0<br>
-                        M108<br>
-                        G53 B0.0<br>
-                        M1<br>
+                        M30
                     </div>
                 </div>
                 <canvas id="particle-canvas"></canvas>
@@ -309,47 +278,30 @@
 
         <!-- CAPABILITIES PAGE -->
         <div id="capabilities" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Engineering Excellence</h2>
-                    <h3 class="text-5xl font-black tech-font uppercase">Our Capabilities</h3>
+            <div class="max-w-7xl mx-auto text-center mb-16">
+                <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Engineering Excellence</h2>
+                <h3 class="text-5xl font-black tech-font uppercase">Our Capabilities</h3>
+            </div>
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="reveal card-blur p-8 rounded-sm">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
+                    <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, stainless steels, and tool steels.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="reveal card-blur p-8 rounded-sm">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
-                        <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, stainless steels, and tool steels.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.1s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
-                        <p class="text-sm text-slate-400">High-precision lathe operations for cylindrical components, featuring multi-axis turning and extreme concentricity control.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.2s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-microchip"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">Swiss Machining</h4>
-                        <p class="text-sm text-slate-400">High-volume, ultra-precise turning for long, slender, and complex components required in medical and defense applications.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.3s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
-                        <p class="text-sm text-slate-400">Precision wire EDM for hardened tools, dies, and ultra-fine intricate details that conventional machining cannot reach.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.4s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-drafting-compass"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">CAD/CAM</h4>
-                        <p class="text-sm text-slate-400">Fully integrated with SolidWorks and state-of-the-art CAM software for a seamless, error-free model-to-machine workflow.</p>
-                    </div>
-                    <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.5s">
-                        <div class="text-3xl text-red-600 mb-6"><i class="fas fa-tools"></i></div>
-                        <h4 class="text-xl font-black tech-font uppercase mb-4">Manual Machining</h4>
-                        <p class="text-sm text-slate-400">Traditional Bridgeports and lathes for custom one-off parts, specialized repairs, and rapid modifications.</p>
-                    </div>
+                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.1s">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
+                    <p class="text-sm text-slate-400">High-precision lathe operations for cylindrical components.</p>
+                </div>
+                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.2s">
+                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
+                    <h4 class="text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
+                    <p class="text-sm text-slate-400">Precision wire EDM for hardened tools and intricate details.</p>
                 </div>
             </div>
         </div>
 
-        <!-- INDUSTRIES PAGE -->
+        <!-- INDUSTRIES PAGE (Locked) -->
         <div id="industries" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
@@ -357,57 +309,37 @@
                     <h3 class="text-5xl font-black tech-font uppercase">Industries We Serve</h3>
                 </div>
                 <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                    <!-- Medical -->
                     <div class="reveal card-blur overflow-hidden group">
                         <div class="h-64 overflow-hidden relative">
                             <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Medical Cervical Plate Machining" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                             <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Medical</h4></div>
                         </div>
-                        <div class="p-8 space-y-4">
-                            <p class="text-slate-400">Precision titanium implants, cervical plates, and surgical instruments.</p>
-                            <ul class="text-sm text-slate-500 space-y-2">
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Bone Screws & Fasteners</li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Surgical Instrumentation</li>
-                            </ul>
-                        </div>
+                        <div class="p-8"><p class="text-slate-400">Precision cervical plates and surgical tools.</p></div>
                     </div>
-                    <!-- Aerospace -->
                     <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.1s">
                         <div class="h-64 overflow-hidden relative">
                             <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                             <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Aerospace</h4></div>
                         </div>
-                        <div class="p-8 space-y-4">
-                            <p class="text-slate-400">Complex airframe and jet engine components with extreme accuracy.</p>
-                            <ul class="text-sm text-slate-500 space-y-2">
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Engine Components</li>
-                                <li class="flex items-center gap-2"><i class="fas fa-check text-red-600"></i> Structural Airframe Parts</li>
-                            </ul>
-                        </div>
+                        <div class="p-8"><p class="text-slate-400">Structural airframe components.</p></div>
                     </div>
-                    <!-- Automotive -->
                     <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
                         <div class="h-64 overflow-hidden relative">
                             <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=800&q=80" alt="Automotive" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                             <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Automotive</h4></div>
                         </div>
-                        <div class="p-8 space-y-4">
-                            <p class="text-slate-400">High-performance CNC solutions for racing and custom vehicle development.</p>
-                        </div>
+                        <div class="p-8"><p class="text-slate-400">Performance racing components.</p></div>
                     </div>
-                    <!-- Defense -->
                     <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.3s">
                         <div class="h-64 overflow-hidden relative">
                             <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Defense" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                             <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Defense</h4></div>
                         </div>
-                        <div class="p-8 space-y-4">
-                            <p class="text-slate-400">Rugged tactical hardware and ITAR-compliant manufacturing.</p>
-                        </div>
+                        <div class="p-8"><p class="text-slate-400">ITAR-compliant manufacturing.</p></div>
                     </div>
                 </div>
             </div>
@@ -420,69 +352,87 @@
                     <h3 class="text-5xl md:text-7xl font-black tech-font uppercase tracking-tighter">Our <span class="text-red-600">Story</span></h3>
                     <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
                 </div>
-                
-                <div class="space-y-8 text-slate-300 text-xl leading-relaxed tracking-wide font-light">
-                    <p class="reveal">
-                        Mag 7 Machining was founded with a singular, unshakable goal: to provide uncompromising quality and precision to industrial sectors that demand absolute excellence. 
-                    </p>
-                    <p class="reveal border-l-4 border-red-600 pl-8 py-4 italic text-slate-100 bg-white/5">
-                        Located in Lynnville, TN, we have evolved from a specialized shop into a high-tech manufacturing facility. Our commitment to world-class technology like Okuma and Mitsubishi ensures that our clients receive parts that meet the tightest tolerances.
-                    </p>
-                    <p class="reveal">
-                        We are more than just a vendor; we are your mission-critical manufacturing partner. Our team brings over <span class="text-red-600 font-bold tech-font">30+ years</span> of experience in complex milling, turning, EDM, and high production runs.
-                    </p>
-                </div>
+                <p class="text-slate-300 text-xl text-center leading-relaxed font-light reveal">Mag 7 Machining provides uncompromising quality for industrial sectors demanding absolute excellence.</p>
             </div>
         </div>
 
         <!-- CONTACT PAGE -->
         <div id="contact" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
-                <div class="reveal">
-                    <h3 class="text-4xl font-black tech-font uppercase mb-8">Request A <span class="text-red-600">Quote</span></h3>
-                    <form action="https://formspree.io/f/your-endpoint" method="POST" enctype="multipart/form-data" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <input type="text" name="name" required placeholder="Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
-                            <input type="email" name="email" required placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <input type="text" name="company" placeholder="Company Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
-                            <input type="text" name="phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <label class="text-xs uppercase tracking-widest font-bold text-slate-500">Attach Blueprints / 3D Models (STEP, PDF, DXF)</label>
-                            <div class="file-input-wrapper border-2 border-dashed border-white/10 hover:border-red-600/50 transition p-8 text-center bg-white/5 cursor-pointer">
-                                <i class="fas fa-cloud-upload-alt text-3xl text-red-600 mb-4"></i>
-                                <div id="file-list-display" class="space-y-1">
-                                    <p class="text-sm text-slate-400" id="file-instruction-text">Click or drag files here to upload</p>
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-16">
+                    <!-- Form Side -->
+                    <div class="reveal">
+                        <h3 class="text-4xl font-black tech-font uppercase mb-8">Request A <span class="text-red-600">Quote</span></h3>
+                        <form action="https://formspree.io/f/your-endpoint" method="POST" enctype="multipart/form-data" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <input type="text" name="name" required placeholder="Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                                <input type="email" name="email" required placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <input type="text" name="company" placeholder="Company Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                                <input type="text" name="phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs uppercase tracking-widest font-bold text-slate-500">Attach Blueprints (STEP, PDF, DXF)</label>
+                                <div class="file-input-wrapper border-2 border-dashed border-white/10 hover:border-red-600/50 transition p-8 text-center bg-white/5 cursor-pointer">
+                                    <div id="file-list-display"><p class="text-sm text-slate-400">Click or drag files here to upload</p></div>
+                                    <input type="file" name="attachments[]" multiple onchange="updateFileName(this)">
                                 </div>
-                                <input type="file" name="attachments[]" id="file-upload" multiple onchange="updateFileName(this)">
+                            </div>
+                            <textarea name="message" rows="4" placeholder="Briefly describe your requirements..." class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white"></textarea>
+                            <button type="submit" class="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-3 shadow-lg shadow-red-600/20">
+                                Send Inquiry <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Info Side -->
+                    <div class="reveal space-y-10" style="transition-delay: 0.2s">
+                        <div>
+                            <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Facility Location</h4>
+                            <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd, Lynnville, TN 38472</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Direct Contact</h4>
+                            <p class="text-slate-400 font-bold tracking-wider text-xl mb-1">+1 (931) 424-8841</p>
+                            <a href="mailto:rfq@mag7machining.com" class="text-slate-400 font-light underline decoration-red-600/30 hover:text-red-600 transition block text-lg">rfq@mag7machining.com</a>
+                        </div>
+                        <div class="p-6 bg-white/5 border border-white/5 rounded-sm">
+                            <h5 class="font-bold text-[10px] uppercase tracking-widest text-red-600 mb-4">Operational Hours</h5>
+                            <ul class="text-xs space-y-3 font-light text-slate-300">
+                                <li class="flex justify-between"><span>Mon - Thu</span> <span class="text-white font-bold">7:00 AM - 5:00 PM Central</span></li>
+                                <li class="flex justify-between"><span>Friday</span> <span class="text-red-500 font-bold uppercase tracking-tighter">By Appointment</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIMULATOR SECTION -->
+                <div class="reveal pt-24 mt-24 border-t border-white/5">
+                    <div class="text-center space-y-6">
+                        <div class="flex items-center justify-center gap-4">
+                            <div class="h-px bg-red-600/30 w-12"></div>
+                            <h3 class="text-2xl font-black tech-font uppercase tracking-tighter">Machining <span class="text-red-600">Simulator</span></h3>
+                            <div class="h-px bg-red-600/30 w-12"></div>
+                        </div>
+                        <p id="game-phase-text" class="text-slate-400 text-[10px] uppercase tracking-[0.3em]">System Standby</p>
+                        <div id="game-container" class="rounded-lg shadow-2xl relative">
+                            <canvas id="game-canvas"></canvas>
+                            
+                            <div id="game-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-20 transition-opacity duration-500">
+                                <div id="game-message" class="mb-6 tech-font text-white uppercase text-center hidden"></div>
+                                <button id="start-game-btn" class="px-10 py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition transform hover:scale-105">Initiate Machining</button>
+                                <p class="mt-4 text-[8px] text-slate-600 uppercase tracking-widest">Manual Override Active</p>
+                            </div>
+
+                            <div id="arm-indicator" class="hidden">Safety Lock: Move Cursor to Green Start Zone</div>
+                            
+                            <div id="game-stats" class="absolute top-6 left-6 grid grid-cols-2 gap-x-12 gap-y-4 text-left z-10 pointer-events-none hidden">
+                                <div><div class="dro-label">X-Axis</div><div id="x-axis-display" class="dro-value">0.0000</div></div>
+                                <div><div class="dro-label">Y-Axis</div><div id="y-axis-display" class="dro-value">0.0000</div></div>
+                                <div><div class="dro-label">Deviation</div><div id="accuracy-display" class="dro-value">0.0000"</div></div>
+                                <div><div class="dro-label">Pass Precision</div><div id="yield-display" class="dro-value text-green-500">100%</div></div>
                             </div>
                         </div>
-
-                        <textarea name="message" rows="4" placeholder="Briefly describe your requirements..." class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white"></textarea>
-                        <button type="submit" class="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-3 shadow-lg shadow-red-600/20">
-                            Send Inquiry <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-                <div class="reveal space-y-10" style="transition-delay: 0.2s">
-                    <div>
-                        <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Facility Location</h4>
-                        <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd,<br>Lynnville, TN 38472</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Contact</h4>
-                        <p class="text-slate-400 font-bold tracking-wider text-xl">+1 (931) 424-8841</p>
-                        <a href="mailto:rfq@mag7machining.com" class="text-slate-400 font-light underline decoration-red-600/30 hover:text-red-600 transition block">rfq@mag7machining.com</a>
-                    </div>
-                    <div class="p-6 bg-white/5 border border-white/5 rounded-sm">
-                        <h5 class="font-bold text-[10px] uppercase tracking-widest text-red-600 mb-4">Operational Hours</h5>
-                        <ul class="text-xs space-y-3 font-light text-slate-300">
-                            <li class="flex justify-between"><span>Mon - Thu</span> <span class="text-white font-bold">7:00 AM - 5:00 PM Central</span></li>
-                            <li class="flex justify-between"><span>Friday</span> <span class="text-red-500 font-bold uppercase tracking-tighter">By Appointment</span></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -491,12 +441,7 @@
 
     <footer class="bg-black pt-20 pb-10 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <img src="MAG7 LOGO.png" alt="Logo" class="h-12 w-auto mx-auto mb-6 grayscale hover:grayscale-0 transition">
-            <div class="flex justify-center gap-6 mb-8 text-[10px] uppercase font-bold tracking-widest text-slate-600">
-                <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="hover:text-white transition">Capabilities</a>
-                <a href="javascript:void(0)" onclick="navigateTo('industries')" class="hover:text-white transition">Industries</a>
-                <a href="javascript:void(0)" onclick="navigateTo('about')" class="hover:text-white transition">Story</a>
-            </div>
+            <img src="MAG7 LOGO.png" alt="Logo" class="h-12 w-auto mx-auto mb-6 grayscale transition hover:grayscale-0">
             <p class="text-slate-600 text-[10px] uppercase tracking-[0.2em]">&copy; 2026 Mag 7 Machining, LLC. | Lynnville, TN</p>
         </div>
     </footer>
@@ -509,21 +454,15 @@
                 targetPage.classList.add('active');
                 window.scrollTo(0, 0);
                 setTimeout(reveal, 100);
+                if (pageId === 'contact') initGame();
             }
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('text-red-600');
-                if (link.getAttribute('data-page') === pageId) link.classList.add('text-red-600');
-            });
         }
-
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 50) {
-                    reveals[i].classList.add("active");
-                }
+                if (elementTop < windowHeight - 50) reveals[i].classList.add("active");
             }
         }
         window.addEventListener("scroll", reveal);
@@ -531,76 +470,170 @@
 
         function updateFileName(input) {
             let listDisplay = document.getElementById('file-list-display');
-            if (input.files.length === 0) {
-                listDisplay.innerHTML = '<p class="text-sm text-slate-400" id="file-instruction-text">Click or drag files here to upload</p>';
-            } else {
-                const fileNames = Array.from(input.files).map(f => f.name);
-                let html = `<p class="text-red-600 font-black text-xs uppercase mb-2 tracking-widest">${fileNames.length} Files Selected:</p>`;
-                html += `<div class="text-white text-xs font-mono bg-black/40 p-3 space-y-1 inline-block text-left rounded border border-white/5">`;
-                fileNames.forEach(name => {
-                    html += `<div class="flex items-center gap-2"><i class="fas fa-file-code text-red-600/50"></i> ${name}</div>`;
-                });
-                html += `</div>`;
-                listDisplay.innerHTML = html;
+            if (input.files.length > 0) {
+                listDisplay.innerHTML = `<span class="text-red-600 font-bold">${input.files.length} Files Ready</span>`;
             }
         }
 
+        // BACKGROUND PARTICLES
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let mouse = { x: null, y: null, radius: 100 };
-
-        window.addEventListener('mousemove', function(event) {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
+        let mousePos = { x: -1000, y: -1000, radius: 100 };
+        window.addEventListener('mousemove', (e) => { mousePos.x = e.x; mousePos.y = e.y; });
 
         function initParticles() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             particles = [];
             for (let i = 0; i < 100; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 1,
-                    speedX: (Math.random() - 0.5) * 0.8,
-                    speedY: (Math.random() - 0.5) * 0.8
-                });
+                particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 + 1, speedX: (Math.random() - 0.5) * 0.8, speedY: (Math.random() - 0.5) * 0.8 });
             }
         }
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                let p = particles[i];
-                p.x += p.speedX;
-                p.y += p.speedY;
-
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-
-                let dx = mouse.x - p.x;
-                let dy = mouse.y - p.y;
-                let distance = Math.sqrt(dx*dx + dy*dy);
-                if (distance < mouse.radius) {
-                    p.x -= dx / 40;
-                    p.y -= dy / 40;
-                }
-
-                ctx.fillStyle = 'rgba(237, 28, 36, 0.4)';
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+                let dx = mousePos.x - p.x; let dy = mousePos.y - p.y;
+                if (Math.sqrt(dx*dx + dy*dy) < mousePos.radius) { p.x -= dx / 40; p.y -= dy / 40; }
+                ctx.fillStyle = 'rgba(237, 28, 36, 0.4)'; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+            });
             requestAnimationFrame(animateParticles);
         }
 
-        window.addEventListener('resize', initParticles);
-        initParticles();
-        animateParticles();
+        // SIMULATOR LOGIC
+        const gameCanvas = document.getElementById('game-canvas');
+        const gctx = gameCanvas.getContext('2d');
+        const startBtn = document.getElementById('start-game-btn');
+        const gameOverlay = document.getElementById('game-overlay');
+        const gameStats = document.getElementById('game-stats');
+        const gameMsg = document.getElementById('game-message');
+        const accuracyDisplay = document.getElementById('accuracy-display');
+        const xAxisDisplay = document.getElementById('x-axis-display');
+        const yAxisDisplay = document.getElementById('y-axis-display');
+        const yieldDisplay = document.getElementById('yield-display');
+        const phaseText = document.getElementById('game-phase-text');
+        const armIndicator = document.getElementById('arm-indicator');
+        
+        let isGameRunning = false;
+        let isArmed = false;
+        let toolX = 0, toolY = 0, targetX = 0, targetY = 0;
+        let path = [];
+        let rotation = 0;
+        let currentPhase = 1;
+        let maxTolerance = 25;
+        let machinedTrail = [];
+        let inZoneTicks = 0;
+        let totalMachiningTicks = 0;
+
+        function initGame() {
+            const container = document.getElementById('game-container');
+            if (!container) return;
+            gameCanvas.width = container.clientWidth;
+            gameCanvas.height = container.clientHeight;
+            const w = gameCanvas.width; const h = gameCanvas.height;
+            path = [
+                {x: w*0.05, y: h*0.5}, {x: w*0.15, y: h*0.5}, {x: w*0.25, y: h*0.3}, 
+                {x: w*0.4, y: h*0.3}, {x: w*0.5, y: h*0.7}, {x: w*0.7, y: h*0.7}, 
+                {x: w*0.8, y: h*0.4}, {x: w*0.95, y: h*0.4}
+            ];
+            toolX = path[0].x; toolY = path[0].y;
+            targetX = 0; targetY = 0;
+            machinedTrail = [];
+            isArmed = false;
+            inZoneTicks = 0;
+            totalMachiningTicks = 0;
+            if (currentPhase === 1) { maxTolerance = 30; phaseText.innerText = 'Phase 1: Roughing Pass'; }
+            else if (currentPhase === 2) { maxTolerance = 18; phaseText.innerText = 'Phase 2: Semi-Finish Pass'; }
+            else { maxTolerance = 8; phaseText.innerText = 'Phase 3: High-Precision Finish'; }
+        }
+
+        function drawGame() {
+            if (!isGameRunning) return;
+            gctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            
+            // Grid
+            gctx.strokeStyle = 'rgba(255,255,255,0.03)'; gctx.lineWidth = 1;
+            for(let i=0; i<gameCanvas.width; i+=40) { gctx.beginPath(); gctx.moveTo(i,0); gctx.lineTo(i,gameCanvas.height); gctx.stroke(); }
+            for(let i=0; i<gameCanvas.height; i+=40) { gctx.beginPath(); gctx.moveTo(0,i); gctx.lineTo(gameCanvas.width,i); gctx.stroke(); }
+            
+            // Zone
+            gctx.strokeStyle = currentPhase === 3 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.08)';
+            gctx.lineWidth = maxTolerance * 2;
+            gctx.lineJoin = 'round'; gctx.lineCap = 'round';
+            gctx.beginPath(); gctx.moveTo(path[0].x, path[0].y);
+            path.forEach(p => gctx.lineTo(p.x, p.y));
+            gctx.stroke();
+
+            // PULSATING END POINT INDICATOR
+            if (isArmed) {
+                gctx.strokeStyle = '#ED1C24';
+                gctx.lineWidth = 1;
+                gctx.beginPath();
+                const endP = path[path.length - 1];
+                const pulseR = 10 + Math.sin(Date.now()/150)*5;
+                gctx.arc(endP.x, endP.y, pulseR, 0, Math.PI*2);
+                gctx.stroke();
+                gctx.beginPath();
+                gctx.arc(endP.x, endP.y, 2, 0, Math.PI*2);
+                gctx.fill();
+            }
+
+            if (!isArmed) {
+                gctx.fillStyle = 'rgba(0, 255, 0, 0.15)'; gctx.strokeStyle = '#00ff00'; gctx.lineWidth = 2;
+                gctx.beginPath(); const startRadius = 25 + Math.sin(Date.now()/200)*5;
+                gctx.arc(path[0].x, path[0].y, startRadius, 0, Math.PI*2); gctx.fill(); gctx.stroke();
+                armIndicator.classList.remove('hidden');
+                if (Math.sqrt(Math.pow(targetX - path[0].x, 2) + Math.pow(targetY - path[0].y, 2)) < 20) { isArmed = true; armIndicator.classList.add('hidden'); }
+                toolX = path[0].x; toolY = path[0].y;
+            }
+
+            if (isArmed) {
+                totalMachiningTicks++;
+                toolX += (targetX - toolX) * 0.15; toolY += (targetY - toolY) * 0.15;
+                machinedTrail.push({x: toolX, y: toolY}); rotation += 0.8;
+                let minDistance = 100;
+                for(let i=0; i<path.length-1; i++) { let d = distToSegment({x: toolX, y: toolY}, path[i], path[i+1]); if (d < minDistance) minDistance = d; }
+                if (minDistance <= maxTolerance) inZoneTicks++;
+                const yieldPercent = Math.floor((inZoneTicks / totalMachiningTicks) * 100);
+                yieldDisplay.innerText = yieldPercent + '%'; yieldDisplay.style.color = yieldPercent < 90 ? '#ED1C24' : '#00ff00';
+                xAxisDisplay.innerText = (toolX / 100).toFixed(4); yAxisDisplay.innerText = (toolY / 100).toFixed(4);
+                accuracyDisplay.innerText = (minDistance * (currentPhase === 1 ? 0.001 : 0.0001)).toFixed(4) + '"';
+                gctx.strokeStyle = 'rgba(237, 28, 36, 0.1)'; gctx.lineWidth = 15; gctx.beginPath();
+                gctx.moveTo(machinedTrail[0].x, machinedTrail[0].y); machinedTrail.forEach(p => gctx.lineTo(p.x, p.y)); gctx.stroke();
+                if (minDistance > maxTolerance) document.getElementById('game-container').classList.add('vibration'); else document.getElementById('game-container').classList.remove('vibration');
+                if (toolX > gameCanvas.width * 0.94) { checkPassQuality(inZoneTicks / totalMachiningTicks); return; }
+            }
+            gctx.save(); gctx.translate(toolX, toolY); gctx.rotate(rotation);
+            gctx.strokeStyle = isArmed ? '#ED1C24' : '#fff'; gctx.lineWidth = 2;
+            gctx.beginPath(); gctx.arc(0, 0, 8, 0, Math.PI*2); gctx.stroke();
+            for(let i=0; i<4; i++) { gctx.rotate(Math.PI/2); gctx.beginPath(); gctx.moveTo(0, -12); gctx.lineTo(0, -6); gctx.stroke(); }
+            gctx.restore();
+            requestAnimationFrame(drawGame);
+        }
+
+        function checkPassQuality(ratio) {
+            isGameRunning = false; isArmed = false; gameOverlay.classList.remove('hidden'); gameMsg.classList.remove('hidden');
+            if (ratio < 0.90) { gameMsg.innerHTML = '<span class="text-red-600 font-black">QUALITY REJECTED</span><br><span class="text-xs">Precision below 90%. Rework required.</span>'; startBtn.innerText = 'Rework Component'; }
+            else {
+                if (currentPhase === 1) { gameMsg.innerHTML = '<span class="text-green-500">Roughing OK.</span>'; startBtn.innerText = 'Semi-Finish'; currentPhase = 2; }
+                else if (currentPhase === 2) { gameMsg.innerHTML = '<span class="text-yellow-500">Semi-Finish OK.</span>'; startBtn.innerText = 'Final Pass'; currentPhase = 3; }
+                else { gameMsg.innerHTML = '<span class="text-green-500 font-black">CERTIFIED</span>'; startBtn.innerText = 'Next Job'; currentPhase = 1; }
+            }
+        }
+
+        function distToSegment(p, v, w) {
+            let l2 = Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2);
+            if (l2 == 0) return Math.sqrt(Math.pow(p.x - v.x, 2) + Math.pow(p.y - v.y, 2));
+            let t = Math.max(0, Math.min(1, ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2));
+            return Math.sqrt(Math.pow(p.x - (v.x + t * (w.x - v.x)), 2) + Math.pow(p.y - (v.y + t * (w.y - v.y)), 2));
+        }
+
+        startBtn.onclick = () => { isGameRunning = true; isArmed = false; gameOverlay.classList.add('hidden'); gameStats.classList.remove('hidden'); initGame(); drawGame(); };
+        gameCanvas.onmousemove = (e) => { const rect = gameCanvas.getBoundingClientRect(); targetX = e.clientX - rect.left; targetY = e.clientY - rect.top; };
+        initParticles(); animateParticles();
     </script>
 </body>
 </html>
