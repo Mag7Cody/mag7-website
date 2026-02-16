@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mag 7 Machining | High-Tech CNC & Wire EDM</title>
     
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="MAG7 LOGO.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -65,6 +66,7 @@
 
         @media (min-width: 1024px) { .g-code-hud { display: block; } }
 
+        /* Particle Drift Effect */
         #particle-canvas {
             position: absolute;
             top: 0;
@@ -132,25 +134,38 @@
             cursor: pointer;
         }
 
-        /* Processing Overlay */
-        #upload-overlay {
+        /* Wait Screen Overlay */
+        #processing-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(10px);
-            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            text-align: center;
         }
 
-        /* Simulator Styles */
+        .spinner-ring {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(237, 28, 36, 0.1);
+            border-top: 4px solid var(--mag7-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Simulator Robust Styles */
         #game-container {
             position: relative;
             width: 100%;
             max-width: 900px;
-            height: 400px;
+            height: 450px;
             margin: 0 auto;
             background: #050505;
             border: 1px solid #222;
@@ -158,65 +173,56 @@
             cursor: crosshair;
             touch-action: none;
         }
-        #game-canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-        .vibration { animation: vibrate 0.05s infinite; }
+
+        .vibration { animation: vibrate 0.08s infinite; }
         @keyframes vibrate {
             0% { transform: translate(0,0); }
-            25% { transform: translate(2px, 2px); }
-            50% { transform: translate(-2px, 0); }
-            75% { transform: translate(0, -2px); }
+            25% { transform: translate(3px, 3px); }
+            50% { transform: translate(-3px, 0); }
+            75% { transform: translate(0, -3px); }
             100% { transform: translate(0,0); }
         }
-        .dro-label { font-size: 8px; color: #ED1C24; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .dro-value { font-family: 'Orbitron', sans-serif; font-size: 14px; color: #fff; line-height: 1; }
+
+        .dro-label { font-size: 9px; color: #ED1C24; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2px; }
+        .dro-value { font-family: 'Orbitron', sans-serif; font-size: 18px; color: #fff; line-height: 1; }
         
         #arm-indicator {
             position: absolute;
-            top: 40px;
-            right: 40px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: #00ff00;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             pointer-events: none;
             z-index: 5;
-            border: 1px solid #00ff00;
-            padding: 4px 10px;
-            animation: pulse 1s infinite;
+            border: 2px solid #00ff00;
+            padding: 15px 30px;
+            background: rgba(0,0,0,0.8);
+            animation: pulse 1.5s infinite;
         }
+        @keyframes pulse { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.98); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
     </style>
 </head>
 <body class="bg-black text-slate-100 selection:bg-red-600 selection:text-white">
 
-    <!-- Processing Wait Screen -->
-    <div id="upload-overlay">
-        <div class="relative w-24 h-24 mb-8">
-            <i class="fas fa-cog text-red-600 text-6xl animate-[spin_4s_linear_infinite]"></i>
-            <i class="fas fa-cog text-white text-3xl absolute bottom-0 right-0 animate-[spin_2s_linear_infinite_reverse]"></i>
+    <!-- WAIT SCREEN -->
+    <div id="processing-overlay">
+        <div class="mb-8 relative">
+            <i class="fas fa-gear text-red-600 text-7xl animate-[spin_5s_linear_infinite]"></i>
+            <i class="fas fa-gear text-white text-3xl absolute -bottom-2 -right-2 animate-[spin_3s_linear_infinite_reverse]"></i>
         </div>
-        <h2 class="tech-font text-xl text-white uppercase tracking-widest animate-pulse">Processing Attachments</h2>
-        <p class="text-[10px] text-slate-500 uppercase tracking-[0.3em] mt-4">Transmitting encrypted project data. Please do not refresh.</p>
+        <h2 class="tech-font text-2xl font-black uppercase tracking-widest text-white">Transmitting Data</h2>
+        <p class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em] mt-4 animate-pulse">Encrypting Attachments - System Interlock Active</p>
     </div>
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-black/95 backdrop-blur-lg border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center transition-transform hover:scale-105">
-                <img src="MAG7 LOGO.png" alt="Mag 7 Machining" class="h-14 md:h-16 w-auto object-contain" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
-                <div id="logo-fallback" class="hidden items-center space-x-3">
-                    <div class="relative w-10 h-8 bg-red-600 clip-path-m flex items-center justify-center">
-                        <span class="text-black font-black tech-font text-xs mb-1">M7</span>
-                    </div>
-                    <div class="flex flex-col leading-none">
-                        <span class="text-xl font-black tracking-tighter tech-font uppercase">Mag 7</span>
-                        <span class="text-[8px] tracking-[0.3em] uppercase text-red-600 font-bold">Machining, LLC</span>
-                    </div>
-                </div>
+                <img src="MAG7 LOGO.png" alt="Mag 7 Machining" class="h-14 md:h-16 w-auto object-contain">
             </a>
 
             <div class="hidden lg:flex space-x-6 text-[10px] font-bold uppercase tracking-[0.2em]">
@@ -298,20 +304,9 @@
                         G1 Z-3.0312 <br>
                         X3.05 <br>
                         M30<br>
-                        (**** LOOP RESTART ****)<br>
-                        G95 G90 G80 G64 G49 G40 G18 G0<br>
-                        G10.9 X1. (X DIAM)<br>
-                        G53 G0 X0 Y0<br>
-                        G53 Z0<br>
-                        M108<br>
-                        G53 B0.0<br>
-                        M107<br>
-                        N01 (TOOL 001 TURN FACE)<br>
-                        G90 G80 G64 G49 G18 G0<br>
-                        G53 X0 Y0<br>
-                        G53 Z5.0 (TCH Z)<br>
-                        T001.1   M6 (OD TURN - 55)<br>
-                        M30
+                        (**** REPEAT CRAWL ****)<br>
+                        (G-CODE CYCLE COMPLETE)<br>
+                        (RESETTING... 60s HUD ACTIVE)
                     </div>
                 </div>
                 <canvas id="particle-canvas"></canvas>
@@ -324,10 +319,10 @@
                         <h1 class="reveal text-5xl md:text-8xl font-black leading-none tech-font uppercase">
                             Precision <br><span class="text-red-600">Defined.</span>
                         </h1>
-                        <p class="reveal text-lg text-slate-400 max-w-xl font-light leading-relaxed border-l-2 border-red-600 pl-6" style="transition-delay: 0.2s">
+                        <p class="reveal text-lg text-slate-400 max-w-xl font-light leading-relaxed border-l-2 border-red-600 pl-6">
                             Welcome to Mag 7 Machining. We are your one-stop machine shop specializing in close-tolerance components for Aerospace, Defense, and Medical industries.
                         </p>
-                        <div class="reveal flex flex-wrap gap-4 pt-4" style="transition-delay: 0.4s">
+                        <div class="reveal flex flex-wrap gap-4 pt-4">
                             <button onclick="navigateTo('contact')" class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-sm font-black uppercase tracking-widest transition shadow-lg shadow-red-600/20">
                                 Start A Project
                             </button>
@@ -339,13 +334,12 @@
                 </div>
             </header>
             
-            <!-- Statistics Banner (Locked: Black text on Red) -->
             <section class="bg-red-600 py-12 relative z-10">
                 <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div class="reveal"><div class="text-4xl font-black tech-font text-black">30+</div><div class="text-[10px] uppercase font-black text-black/70">Years Experience</div></div>
-                    <div class="reveal" style="transition-delay: 0.1s"><div class="text-4xl font-black tech-font text-black">0.0001"</div><div class="text-[10px] uppercase font-black text-black/70">Tolerance Accuracy</div></div>
-                    <div class="reveal" style="transition-delay: 0.2s"><div class="text-4xl font-black tech-font text-black">ISO</div><div class="text-[10px] uppercase font-black text-black/70">9001:2015 Compliant</div></div>
-                    <div class="reveal" style="transition-delay: 0.3s"><div class="text-4xl font-black tech-font text-black">ITAR</div><div class="text-[10px] uppercase font-black text-black/70">Ready & Compliant</div></div>
+                    <div class="reveal text-black"><div class="text-4xl font-black tech-font">30+</div><div class="text-[10px] uppercase font-black">Years Experience</div></div>
+                    <div class="reveal text-black" style="transition-delay: 0.1s"><div class="text-4xl font-black tech-font">0.0001"</div><div class="text-[10px] uppercase font-black">Tolerance Accuracy</div></div>
+                    <div class="reveal text-black" style="transition-delay: 0.2s"><div class="text-4xl font-black tech-font">ISO</div><div class="text-[10px] uppercase font-black">9001:2015 Compliant</div></div>
+                    <div class="reveal text-black" style="transition-delay: 0.3s"><div class="text-4xl font-black tech-font">ITAR</div><div class="text-[10px] uppercase font-black">Ready & Compliant</div></div>
                 </div>
             </section>
         </div>
@@ -360,27 +354,27 @@
                 <div class="reveal card-blur p-8 rounded-sm">
                     <div class="text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
                     <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
-                    <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, stainless steels, and tool steels.</p>
+                    <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, and tool steels.</p>
                 </div>
                 <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.1s">
                     <div class="text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
                     <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
-                    <p class="text-sm text-slate-400">High-precision lathe operations for cylindrical components, featuring multi-axis turning and extreme concentricity control.</p>
+                    <p class="text-sm text-slate-400">High-precision lathe operations featuring multi-axis turning and extreme concentricity control.</p>
                 </div>
                 <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.2s">
                     <div class="text-3xl text-red-600 mb-6"><i class="fas fa-microchip"></i></div>
                     <h4 class="text-xl font-black tech-font uppercase mb-4">Swiss Machining</h4>
-                    <p class="text-sm text-slate-400">High-volume, ultra-precise turning for long, slender, and complex components required in medical and defense applications.</p>
+                    <p class="text-sm text-slate-400">High-volume, ultra-precise turning for long, slender, and complex components required in medical and defense.</p>
                 </div>
                 <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.3s">
                     <div class="text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
                     <h4 class="text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
-                    <p class="text-sm text-slate-400">Precision wire EDM for hardened tools, dies, and ultra-fine intricate details that conventional machining cannot reach.</p>
+                    <p class="text-sm text-slate-400">Precision wire EDM for hardened tools, dies, and intricate details conventional machining cannot reach.</p>
                 </div>
                 <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.4s">
                     <div class="text-3xl text-red-600 mb-6"><i class="fas fa-drafting-compass"></i></div>
                     <h4 class="text-xl font-black tech-font uppercase mb-4">CAD/CAM</h4>
-                    <p class="text-sm text-slate-400">Fully integrated with SolidWorks and state-of-the-art CAM software for a seamless, error-free model-to-machine workflow.</p>
+                    <p class="text-sm text-slate-400">Fully integrated with SolidWorks and state-of-the-art CAM software for a seamless workflow.</p>
                 </div>
                 <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.5s">
                     <div class="text-3xl text-red-600 mb-6"><i class="fas fa-tools"></i></div>
@@ -399,42 +393,38 @@
             <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 lg:gap-12">
                 <div class="reveal card-blur overflow-hidden group">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Medical Cervical Plate" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Medical" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                         <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Medical</h4></div>
                     </div>
                     <div class="p-8 space-y-4">
-                        <p class="text-slate-400">Specializing in the manufacturing of high-precision orthopedic implants, including titanium cervical plates, bone screws, and specialized surgical instrumentation. We understand the critical nature of surface finish and dimensional stability in medical applications.</p>
+                        <p class="text-slate-400">Specializing in high-precision orthopedic implants, titanium cervical plates, and bone screws with critical surface finishes.</p>
                     </div>
                 </div>
                 <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.1s">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                         <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Aerospace</h4></div>
                     </div>
                     <div class="p-8 space-y-4">
-                        <p class="text-slate-400">Providing flight-critical components for aircraft. Our expertise covers intricate structural airframe parts, jet engine components, and high-concentricity fasteners machined from exotic alloys like Titanium and Inconel.</p>
+                        <p class="text-slate-400">Providing flight-critical airframe parts, jet engine components, and fasteners machined from exotic alloys like Titanium.</p>
                     </div>
                 </div>
                 <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=800&q=80" alt="Automotive" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=800&q=80" alt="Automotive" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                         <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Automotive</h4></div>
                     </div>
                     <div class="p-8 space-y-4">
-                        <p class="text-slate-400">Delivering CNC solutions for professional racing and aftermarket automotive. We specialize in custom engine blocks, suspension assemblies, and lightweight powertrain components.</p>
+                        <p class="text-slate-400">High-performance CNC solutions for racing. We manufacture custom engine blocks and powertrain assemblies for extreme durability.</p>
                     </div>
                 </div>
                 <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.3s">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Defense" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Defense" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                         <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Defense</h4></div>
                     </div>
                     <div class="p-8 space-y-4">
-                        <p class="text-slate-400">ITAR-compliant manufacturing of rugged tactical hardware and electronic housings for communications systems and military-grade optics.</p>
+                        <p class="text-slate-400">ITAR-compliant manufacturing of rugged hardware, tactical housings, and optical components for mission-critical defense systems.</p>
                     </div>
                 </div>
             </div>
@@ -448,7 +438,7 @@
                     <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
                 </div>
                 <div class="space-y-8 text-slate-300 text-xl leading-relaxed tracking-wide font-light">
-                    <p class="reveal">Mag 7 Machining was founded with a singular, unshakable goal: to provide uncompromising quality and precision to industrial sectors that demand absolute excellence.</p>
+                    <p class="reveal">Mag 7 Machining was founded with a singular goal: to provide uncompromising quality and precision to industrial sectors that demand absolute excellence.</p>
                     <p class="reveal border-l-4 border-red-600 pl-8 py-4 italic text-slate-100 bg-white/5">Located in Lynnville, TN, we have evolved into a high-tech manufacturing facility. Our commitment to world-class technology ensures that our clients receive parts that meet the tightest tolerances.</p>
                     <p class="reveal">Our team brings over <span class="text-red-600 font-bold tech-font">30+ years</span> of experience in complex milling, turning, EDM, and high production runs.</p>
                 </div>
@@ -458,7 +448,7 @@
         <!-- CONTACT PAGE -->
         <div id="contact" class="page-content py-20 px-6">
             <div class="max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-2 gap-16">
+                <div class="grid md:grid-cols-2 gap-16 mb-24">
                     <div class="reveal">
                         <h3 class="text-4xl font-black tech-font uppercase mb-8">Request A <span class="text-red-600">Quote</span></h3>
                         <form id="rfq-form" class="space-y-6">
@@ -482,16 +472,16 @@
                                 Send Inquiry <i class="fas fa-paper-plane"></i>
                             </button>
                         </form>
-                        <div id="form-response" class="hidden mt-4 p-4 text-center rounded bg-green-500/10 border border-green-500/30 text-green-500 tech-font uppercase text-xs">Transmission Successful</div>
+                        <div id="form-response" class="hidden mt-4 p-4 text-center rounded bg-green-500/10 border border-green-500/30 text-green-500 tech-font uppercase text-xs">Request Transmitted Successfully</div>
                     </div>
                     <div class="reveal space-y-10" style="transition-delay: 0.2s">
                         <div>
                             <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Location</h4>
-                            <p class="text-slate-400 font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd, Lynnville, TN 38472</p>
+                            <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd, Lynnville, TN 38472</p>
                         </div>
                         <div>
                             <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Direct Contact</h4>
-                            <p class="text-slate-400 font-bold text-xl">+1 (931) 424-8841</p>
+                            <p class="text-slate-400 font-bold text-xl mb-1">+1 (931) 424-8841</p>
                             <a href="mailto:rfq@mag7machining.com" class="text-slate-400 font-light underline decoration-red-600/30 hover:text-red-600 transition block text-lg">rfq@mag7machining.com</a>
                         </div>
                     </div>
@@ -502,21 +492,28 @@
                     <div class="text-center space-y-6">
                         <div class="flex items-center justify-center gap-4">
                             <div class="h-px bg-red-600/30 w-12"></div>
-                            <h3 class="text-2xl font-black tech-font uppercase tracking-tighter text-red-600">Simulator</h3>
+                            <h3 class="text-2xl font-black tech-font uppercase tracking-tighter text-red-600">Machining Simulator</h3>
                             <div class="h-px bg-red-600/30 w-12"></div>
                         </div>
+                        <p id="game-phase-text" class="text-red-600 text-[10px] font-black uppercase tracking-[0.4em]">System Standby</p>
+                        
                         <div id="game-container" class="rounded-lg shadow-2xl relative">
                             <canvas id="game-canvas"></canvas>
+                            
+                            <!-- Interlock Overlay -->
                             <div id="game-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-20">
-                                <div id="game-message" class="mb-6 tech-font text-white uppercase text-center hidden"></div>
-                                <button id="start-game-btn" class="px-10 py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition">Initiate Machining</button>
+                                <div id="game-message" class="mb-8 tech-font text-white uppercase text-center hidden"></div>
+                                <button id="start-game-btn" class="px-12 py-6 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition transform hover:scale-105 shadow-xl">Initiate Machining</button>
                             </div>
+
                             <div id="arm-indicator" class="hidden">Safety Lock: Move Cursor to Green Start Zone</div>
-                            <div id="game-stats" class="absolute top-6 left-6 grid grid-cols-2 gap-x-12 gap-y-4 text-left z-10 pointer-events-none hidden">
-                                <div><div class="dro-label">X-Axis</div><div id="x-axis-display" class="dro-value">0.0000</div></div>
-                                <div><div class="dro-label">Y-Axis</div><div id="y-axis-display" class="dro-value">0.0000</div></div>
-                                <div><div class="dro-label">Deviation</div><div id="accuracy-display" class="dro-value">0.0000"</div></div>
-                                <div><div class="dro-label">Pass Precision</div><div id="yield-display" class="dro-value text-green-500">100%</div></div>
+                            
+                            <!-- Digital Read Out (DRO) -->
+                            <div id="game-stats" class="absolute top-8 left-8 grid grid-cols-2 gap-x-16 gap-y-6 text-left z-10 pointer-events-none hidden">
+                                <div><div class="dro-label">X-Axis Position</div><div id="x-axis-display" class="dro-value">0.0000</div></div>
+                                <div><div class="dro-label">Y-Axis Position</div><div id="y-axis-display" class="dro-value">0.0000</div></div>
+                                <div><div class="dro-label">Surface Deviation</div><div id="accuracy-display" class="dro-value">0.0000"</div></div>
+                                <div><div class="dro-label">Pass Yield</div><div id="yield-display" class="dro-value text-green-500">100%</div></div>
                             </div>
                         </div>
                     </div>
@@ -549,7 +546,6 @@
             });
         }
 
-        // REVEAL
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -561,32 +557,45 @@
         window.addEventListener("scroll", reveal);
         window.onload = reveal;
 
-        // UPLOAD VISUALS
-        function updateFileName(input) {
-            let listDisplay = document.getElementById('file-list-display');
-            if (input.files.length === 0) {
-                listDisplay.innerHTML = '<p class="text-sm text-slate-400">Click or drag files here to upload</p>';
-            } else {
-                const fileNames = Array.from(input.files).map(f => f.name);
-                let html = `<div class="text-white text-xs font-mono bg-black/40 p-3 space-y-1 inline-block text-left rounded border border-white/5">`;
-                fileNames.forEach(name => html += `<div class="flex items-center gap-2"><i class="fas fa-file-code text-red-600/50"></i> ${name}</div>`);
-                html += `</div>`;
-                listDisplay.innerHTML = html;
+        // PARTICLES (HERO)
+        const particleCanvas = document.getElementById('particle-canvas');
+        const pctx = particleCanvas.getContext('2d');
+        let particles = [];
+        let mousePos = { x: -1000, y: -1000, radius: 120 };
+
+        window.addEventListener('mousemove', (e) => { mousePos.x = e.clientX; mousePos.y = e.clientY; });
+
+        function initParticles() {
+            particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push({ x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height, size: Math.random() * 2 + 1, speedX: (Math.random() - 0.5) * 0.6, speedY: (Math.random() - 0.5) * 0.6, color: 'rgba(237, 28, 36, 0.4)' });
             }
         }
 
-        // RFQ HANDLER WITH WAIT SCREEN
+        function animateParticles() {
+            pctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0) p.x = particleCanvas.width; if (p.x > particleCanvas.width) p.x = 0;
+                if (p.y < 0) p.y = particleCanvas.height; if (p.y > particleCanvas.height) p.y = 0;
+                let dx = mousePos.x - p.x; let dy = mousePos.y - p.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < mousePos.radius) { p.x -= dx / 50; p.y -= dy / 50; }
+                pctx.fillStyle = p.color; pctx.beginPath(); pctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); pctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        // RFQ HANDLER
         const rfqForm = document.getElementById('rfq-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const overlay = document.getElementById('upload-overlay');
+        const overlay = document.getElementById('processing-overlay');
 
         rfqForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            overlay.style.display = 'flex'; // ACTIVATE WAIT SCREEN
-
+            overlay.style.display = 'flex'; 
             const fileInput = document.getElementById('form-file');
             const filesData = [];
-
             if (fileInput.files.length > 0) {
                 for (let i = 0; i < fileInput.files.length; i++) {
                     const file = fileInput.files[i];
@@ -598,36 +607,21 @@
                     filesData.push({ name: file.name, data: base64 });
                 }
             }
-
-            const payload = {
-                name: document.getElementById('form-name').value,
-                email: document.getElementById('form-email').value,
-                company: document.getElementById('form-company').value,
-                phone: document.getElementById('form-phone').value,
-                message: document.getElementById('form-message').value,
-                files: filesData
-            };
-
+            const payload = { name: document.getElementById('form-name').value, email: document.getElementById('form-email').value, company: document.getElementById('form-company').value, phone: document.getElementById('form-phone').value, message: document.getElementById('form-message').value, files: filesData };
             try {
                 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdD2bXdqqr4S3ZCo9VJVh5keb-ffneM7Y5fd6VC0YXaEJo4EXDIXL6jmYefcnS67FBTA/exec'; 
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                overlay.style.display = 'none'; // REMOVE WAIT SCREEN
-                rfqForm.reset();
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload), headers: { 'Content-Type': 'application/json' } });
+                overlay.style.display = 'none'; rfqForm.reset();
                 document.getElementById('file-list-display').innerHTML = '<p class="text-sm text-slate-400">Click or drag files here to upload</p>';
                 document.getElementById('form-response').classList.remove('hidden');
+                setTimeout(() => document.getElementById('form-response').classList.add('hidden'), 5000);
             } catch (err) {
                 overlay.style.display = 'none';
-                submitBtn.innerHTML = 'Transmission Error - Please Email Directly';
+                document.getElementById('submit-btn').innerHTML = 'System Error - Please Email Directly';
             }
         });
 
-        // SIMULATOR LOGIC (Baseline Preserved)
+        // SIMULATOR (CHIPS + QC PASSED TEXT + TRY AGAIN)
         const gameCanvas = document.getElementById('game-canvas');
         const gctx = gameCanvas.getContext('2d');
         const startBtn = document.getElementById('start-game-btn');
@@ -638,11 +632,13 @@
         const xAxisDisplay = document.getElementById('x-axis-display');
         const yAxisDisplay = document.getElementById('y-axis-display');
         const yieldDisplay = document.getElementById('yield-display');
+        const phaseText = document.getElementById('game-phase-text');
         const armIndicator = document.getElementById('arm-indicator');
         
         let isGameRunning = false, isArmed = false;
         let toolX = 0, toolY = 0, targetX = 0, targetY = 0;
-        let path = [], machinedTrail = [], inZoneTicks = 0, totalMachiningTicks = 0, currentPhase = 1, rotation = 0, maxTolerance = 25;
+        let path = [], machinedTrail = [], chips = [];
+        let inZoneTicks = 0, totalMachiningTicks = 0, currentPhase = 1, rotation = 0, maxTolerance = 25;
 
         function initGame() {
             const container = document.getElementById('game-container');
@@ -650,8 +646,21 @@
             gameCanvas.width = container.clientWidth; gameCanvas.height = container.clientHeight;
             const w = gameCanvas.width, h = gameCanvas.height;
             path = [{x: w*0.05, y: h*0.5}, {x: w*0.15, y: h*0.5}, {x: w*0.25, y: h*0.3}, {x: w*0.4, y: h*0.3}, {x: w*0.5, y: h*0.7}, {x: w*0.7, y: h*0.7}, {x: w*0.8, y: h*0.4}, {x: w*0.95, y: h*0.4}];
-            toolX = path[0].x; toolY = path[0].y; targetX = 0; targetY = 0; machinedTrail = []; isArmed = false; inZoneTicks = 0; totalMachiningTicks = 0;
-            if (currentPhase === 1) maxTolerance = 30; else if (currentPhase === 2) maxTolerance = 18; else maxTolerance = 8;
+            toolX = path[0].x; toolY = path[0].y; targetX = 0; targetY = 0; machinedTrail = []; chips = []; isArmed = false; inZoneTicks = 0; totalMachiningTicks = 0;
+            if (currentPhase === 1) { maxTolerance = 30; phaseText.innerText = 'Phase 1: Roughing Pass'; }
+            else if (currentPhase === 2) { maxTolerance = 18; phaseText.innerText = 'Phase 2: Semi-Finish Pass'; }
+            else { maxTolerance = 8; phaseText.innerText = 'Phase 3: High-Precision Finish'; }
+        }
+
+        function createChip(x, y) {
+            return {
+                x: x, y: y,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 2) * 5,
+                life: 30 + Math.random() * 20,
+                size: 1 + Math.random() * 2,
+                color: `rgba(${150 + Math.random() * 50}, ${150 + Math.random() * 50}, ${150 + Math.random() * 50}, 0.8)`
+            };
         }
 
         function drawGame() {
@@ -659,57 +668,71 @@
             gctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             gctx.strokeStyle = 'rgba(255,255,255,0.03)'; gctx.lineWidth = 1;
             for(let i=0; i<gameCanvas.width; i+=40) { gctx.beginPath(); gctx.moveTo(i,0); gctx.lineTo(i,gameCanvas.height); gctx.stroke(); }
+            
             gctx.strokeStyle = currentPhase === 3 ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.08)';
             gctx.lineWidth = maxTolerance * 2; gctx.lineJoin = 'round'; gctx.lineCap = 'round';
             gctx.beginPath(); gctx.moveTo(path[0].x, path[0].y); path.forEach(p => gctx.lineTo(p.x, p.y)); gctx.stroke();
 
+            // Pulsating Target Circle
             if (isArmed) {
-                gctx.strokeStyle = '#ED1C24'; gctx.lineWidth = 1; gctx.beginPath();
-                const endP = path[path.length - 1]; const pulseR = 10 + Math.sin(Date.now()/150)*5;
-                gctx.arc(endP.x, endP.y, pulseR, 0, Math.PI*2); gctx.stroke();
+                const endP = path[path.length - 1];
+                gctx.strokeStyle = '#ED1C24'; gctx.lineWidth = 2;
+                gctx.beginPath(); gctx.arc(endP.x, endP.y, 12 + Math.sin(Date.now()/150)*6, 0, Math.PI*2); gctx.stroke();
+                gctx.beginPath(); gctx.moveTo(endP.x-5, endP.y); gctx.lineTo(endP.x+5, endP.y); gctx.stroke();
+                gctx.beginPath(); gctx.moveTo(endP.x, endP.y-5); gctx.lineTo(endP.x, endP.y+5); gctx.stroke();
             }
 
             if (!isArmed) {
                 gctx.fillStyle = 'rgba(0, 255, 0, 0.15)'; gctx.strokeStyle = '#00ff00'; gctx.lineWidth = 2;
                 gctx.beginPath(); gctx.arc(path[0].x, path[0].y, 25 + Math.sin(Date.now()/200)*5, 0, Math.PI*2); gctx.fill(); gctx.stroke();
                 armIndicator.classList.remove('hidden');
-                if (Math.sqrt(Math.pow(targetX - path[0].x, 2) + Math.pow(targetY - path[0].y, 2)) < 20) { isArmed = true; armIndicator.classList.add('hidden'); }
+                if (Math.sqrt(Math.pow(targetX - path[0].x, 2) + Math.pow(targetY - path[0].y, 2)) < 25) { isArmed = true; armIndicator.classList.add('hidden'); }
                 toolX = path[0].x; toolY = path[0].y;
             }
 
             if (isArmed) {
-                totalMachiningTicks++; toolX += (targetX - toolX) * 0.15; toolY += (targetY - toolY) * 0.15;
+                totalMachiningTicks++; toolX += (targetX - toolX) * 0.12; toolY += (targetY - toolY) * 0.12;
                 machinedTrail.push({x: toolX, y: toolY}); rotation += 0.8;
                 let minDistance = 100;
                 for(let i=0; i<path.length-1; i++) { let d = distToSegment({x: toolX, y: toolY}, path[i], path[i+1]); if (d < minDistance) minDistance = d; }
-                if (minDistance <= maxTolerance) inZoneTicks++;
+                if (minDistance <= maxTolerance) { inZoneTicks++; if (Math.random() > 0.3) chips.push(createChip(toolX, toolY)); }
                 const yieldPercent = Math.floor((inZoneTicks / totalMachiningTicks) * 100);
-                yieldDisplay.innerText = yieldPercent + '%'; xAxisDisplay.innerText = (toolX / 100).toFixed(4);
+                yieldDisplay.innerText = yieldPercent + '%'; yieldDisplay.style.color = yieldPercent < 90 ? '#ED1C24' : '#00ff00';
+                xAxisDisplay.innerText = (toolX / 100).toFixed(4); yAxisDisplay.innerText = (toolY / 100).toFixed(4);
                 accuracyDisplay.innerText = (minDistance * (currentPhase === 1 ? 0.001 : 0.0001)).toFixed(4) + '"';
-                gctx.strokeStyle = 'rgba(237, 28, 36, 0.1)'; gctx.lineWidth = 15; gctx.beginPath();
+                gctx.strokeStyle = 'rgba(237, 28, 36, 0.15)'; gctx.lineWidth = 15; gctx.beginPath();
                 gctx.moveTo(machinedTrail[0].x, machinedTrail[0].y); machinedTrail.forEach(p => gctx.lineTo(p.x, p.y)); gctx.stroke();
+                if (minDistance > maxTolerance) document.getElementById('game-container').classList.add('vibration');
+                else document.getElementById('game-container').classList.remove('vibration');
                 if (toolX > gameCanvas.width * 0.94) { checkPassQuality(inZoneTicks / totalMachiningTicks); return; }
             }
+
+            chips.forEach((chip, index) => { chip.x += chip.vx; chip.y += chip.vy; chip.vy += 0.2; chip.life--; if (chip.life <= 0) chips.splice(index, 1); gctx.fillStyle = chip.color; gctx.fillRect(chip.x, chip.y, chip.size, chip.size); });
+
             gctx.save(); gctx.translate(toolX, toolY); gctx.rotate(rotation);
             gctx.strokeStyle = isArmed ? '#ED1C24' : '#fff'; gctx.lineWidth = 2;
             gctx.beginPath(); gctx.arc(0, 0, 8, 0, Math.PI*2); gctx.stroke();
+            for(let i=0; i<4; i++) { gctx.rotate(Math.PI/2); gctx.beginPath(); gctx.moveTo(0, -12); gctx.lineTo(0, -8); gctx.stroke(); }
             gctx.restore(); requestAnimationFrame(drawGame);
         }
 
         function checkPassQuality(ratio) {
-            isGameRunning = false; isArmed = false; gameOverlay.classList.remove('hidden'); gameMsg.classList.remove('hidden');
-            if (ratio < 0.90) { gameMsg.innerHTML = '<span class="text-red-600 font-black">QUALITY REJECTED</span>'; }
-            else { currentPhase++; gameMsg.innerHTML = '<span class="text-green-500">QC OK.</span>'; if (currentPhase > 3) currentPhase = 1; }
+            isGameRunning = false; isArmed = false; document.getElementById('game-container').classList.remove('vibration');
+            gameOverlay.classList.remove('hidden'); gameMsg.classList.remove('hidden');
+            if (ratio < 0.90) { gameMsg.innerHTML = '<span class="text-red-600 font-black uppercase">Quality Rejected</span><br><span class="text-xs">Precision threshold not met.</span>'; startBtn.innerText = 'Try Again'; }
+            else { 
+                if (currentPhase === 1) { gameMsg.innerHTML = '<span class="text-green-500">Roughing OK.</span>'; startBtn.innerText = 'Begin Semi-Finish Pass'; currentPhase = 2; }
+                else if (currentPhase === 2) { gameMsg.innerHTML = '<span class="text-yellow-500">Semi-Finish OK.</span>'; startBtn.innerText = 'Begin Final Finish'; currentPhase = 3; }
+                else { gameMsg.innerHTML = '<span class="text-green-500 font-black uppercase">QC PASSED</span>'; startBtn.innerText = 'Next Job'; currentPhase = 1; } 
+            }
         }
 
-        function distToSegment(p, v, w) {
-            let l2 = Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2); if (l2 == 0) return Math.sqrt(Math.pow(p.x - v.x, 2) + Math.pow(p.y - v.y, 2));
-            let t = Math.max(0, Math.min(1, ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2));
-            return Math.sqrt(Math.pow(p.x - (v.x + t * (w.x - v.x)), 2) + Math.pow(p.y - (v.y + t * (w.y - v.y)), 2));
-        }
+        function distToSegment(p, v, w) { let l2 = Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2); if (l2 == 0) return Math.sqrt(Math.pow(p.x - v.x, 2) + Math.pow(p.y - v.y, 2)); let t = Math.max(0, Math.min(1, ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2)); return Math.sqrt(Math.pow(p.x - (v.x + t * (w.x - v.x)), 2) + Math.pow(p.y - (v.y + t * (w.y - v.y)), 2)); }
 
         startBtn.onclick = () => { isGameRunning = true; gameOverlay.classList.add('hidden'); gameStats.classList.remove('hidden'); initGame(); drawGame(); };
         gameCanvas.onmousemove = (e) => { const rect = gameCanvas.getBoundingClientRect(); targetX = e.clientX - rect.left; targetY = e.clientY - rect.top; };
+        
+        initParticles(); animateParticles();
     </script>
 </body>
 </html>
