@@ -166,6 +166,33 @@
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* Mobile Menu Overlay */
+        #mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .mobile-link {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            margin: 15px 0;
+            transition: color 0.3s;
+        }
+
+        .mobile-link.active { color: var(--mag7-red); }
+
         /* Simulator Robust Styles */
         #game-container {
             position: relative;
@@ -241,6 +268,21 @@
         <p class="text-red-600 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] mt-4 animate-pulse">Encrypting Attachments - System Interlock Active</p>
     </div>
 
+    <!-- MOBILE MENU OVERLAY -->
+    <div id="mobile-menu">
+        <button class="absolute top-6 right-6 text-3xl text-red-600" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
+        <a href="javascript:void(0)" onclick="navigateTo('home')" class="mobile-link nav-link active" data-page="home">Home</a>
+        <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="mobile-link nav-link" data-page="capabilities">Capabilities</a>
+        <a href="javascript:void(0)" onclick="navigateTo('industries')" class="mobile-link nav-link" data-page="industries">Industries</a>
+        <a href="javascript:void(0)" onclick="navigateTo('about')" class="mobile-link nav-link" data-page="about">About Us</a>
+        <a href="javascript:void(0)" onclick="navigateTo('contact')" class="mobile-link nav-link" data-page="contact">Request Quote</a>
+        
+        <div class="mt-20 text-center">
+            <p class="text-[8px] uppercase tracking-[0.5em] text-slate-600 mb-4">Established 1995</p>
+            <img src="MAG7 LOGO.png" alt="Logo" class="h-8 w-auto mx-auto grayscale opacity-50">
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-black/95 backdrop-blur-lg border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
@@ -256,7 +298,7 @@
                 <a href="javascript:void(0)" onclick="navigateTo('contact')" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-sm transition text-white shadow-lg shadow-red-600/20 ml-4">Request Quote</a>
             </div>
             
-            <button class="lg:hidden text-2xl text-red-600 p-2" onclick="navigateTo('contact')"><i class="fas fa-bars"></i></button>
+            <button class="lg:hidden text-2xl text-red-600 p-2" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
         </div>
     </nav>
 
@@ -537,14 +579,25 @@
 
     <footer class="bg-black pt-12 md:pt-20 pb-8 md:pb-10 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <img src="MAG7 LOGO.png" alt="Logo" class="h-8 md:h-12 w-auto mx-auto mb-6 grayscale transition hover:grayscale-0">
+            <img src="MAG7 LOGO.png" alt="Logo" class="h-10 md:h-14 w-auto mx-auto mb-8 grayscale hover:grayscale-0 transition duration-500">
+            
+            <!-- Footer Navigation Restored -->
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                <a href="javascript:void(0)" onclick="navigateTo('home')" class="hover:text-red-600 transition">Home</a>
+                <a href="javascript:void(0)" onclick="navigateTo('capabilities')" class="hover:text-red-600 transition">Capabilities</a>
+                <a href="javascript:void(0)" onclick="navigateTo('industries')" class="hover:text-red-600 transition">Industries</a>
+                <a href="javascript:void(0)" onclick="navigateTo('about')" class="hover:text-red-600 transition">About Us</a>
+                <a href="javascript:void(0)" onclick="navigateTo('contact')" class="text-red-600 hover:text-white transition">Request Quote</a>
+            </div>
+
             <p class="text-slate-600 text-[8px] md:text-[10px] uppercase tracking-[0.2em]">&copy; 2026 Mag 7 Machining, LLC. | Lynnville, TN</p>
         </div>
     </footer>
 
     <script>
-        // NAVIGATION
+        // NAVIGATION & MOBILE MENU
         function navigateTo(pageId) {
+            // Update Pages
             document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
             const targetPage = document.getElementById(pageId);
             if (targetPage) {
@@ -553,10 +606,25 @@
                 setTimeout(reveal, 100);
                 if (pageId === 'contact') initGame();
             }
+
+            // Update Header Links
             document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('text-red-600');
-                if (link.getAttribute('data-page') === pageId) link.classList.add('text-red-600');
+                link.classList.remove('text-red-600', 'active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('text-red-600', 'active');
+                }
             });
+
+            // Close Mobile Menu if open
+            const menu = document.getElementById('mobile-menu');
+            if (menu.style.display === 'flex') toggleMobileMenu();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const isVisible = menu.style.display === 'flex';
+            menu.style.display = isVisible ? 'none' : 'flex';
+            document.body.style.overflow = isVisible ? 'auto' : 'hidden';
         }
 
         function reveal() {
