@@ -22,6 +22,7 @@
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             background: #000;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .tech-font { font-family: 'Orbitron', sans-serif; }
@@ -146,16 +147,21 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 20px;
         }
 
         .spinner-ring {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border: 4px solid rgba(237, 28, 36, 0.1);
             border-top: 4px solid var(--mag7-red);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .spinner-ring { width: 80px; height: 80px; }
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -165,13 +171,17 @@
             position: relative;
             width: 100%;
             max-width: 900px;
-            height: 450px;
+            height: 350px;
             margin: 0 auto;
             background: #050505;
             border: 1px solid #222;
             overflow: hidden;
             cursor: crosshair;
             touch-action: none;
+        }
+
+        @media (min-width: 768px) {
+            #game-container { height: 450px; }
         }
 
         .vibration { animation: vibrate 0.08s infinite; }
@@ -183,8 +193,13 @@
             100% { transform: translate(0,0); }
         }
 
-        .dro-label { font-size: 9px; color: #ED1C24; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2px; }
-        .dro-value { font-family: 'Orbitron', sans-serif; font-size: 18px; color: #fff; line-height: 1; }
+        .dro-label { font-size: 8px; color: #ED1C24; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .dro-value { font-family: 'Orbitron', sans-serif; font-size: 14px; color: #fff; line-height: 1; }
+
+        @media (min-width: 768px) {
+            .dro-label { font-size: 9px; letter-spacing: 2px; }
+            .dro-value { font-size: 18px; }
+        }
         
         #arm-indicator {
             position: absolute;
@@ -192,17 +207,25 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: #00ff00;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
             pointer-events: none;
             z-index: 5;
             border: 2px solid #00ff00;
-            padding: 15px 30px;
+            padding: 10px 20px;
             background: rgba(0,0,0,0.8);
             animation: pulse 1.5s infinite;
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
         }
+
+        @media (min-width: 768px) {
+            #arm-indicator { font-size: 12px; letter-spacing: 4px; padding: 15px 30px; }
+        }
+
         @keyframes pulse { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.98); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
     </style>
 </head>
@@ -211,18 +234,18 @@
     <!-- WAIT SCREEN -->
     <div id="processing-overlay">
         <div class="mb-8 relative">
-            <i class="fas fa-gear text-red-600 text-7xl animate-[spin_5s_linear_infinite]"></i>
-            <i class="fas fa-gear text-white text-3xl absolute -bottom-2 -right-2 animate-[spin_3s_linear_infinite_reverse]"></i>
+            <i class="fas fa-gear text-red-600 text-5xl md:text-7xl animate-[spin_5s_linear_infinite]"></i>
+            <i class="fas fa-gear text-white text-2xl md:text-3xl absolute -bottom-2 -right-2 animate-[spin_3s_linear_infinite_reverse]"></i>
         </div>
-        <h2 class="tech-font text-2xl font-black uppercase tracking-widest text-white">Transmitting Data</h2>
-        <p class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em] mt-4 animate-pulse">Encrypting Attachments - System Interlock Active</p>
+        <h2 class="tech-font text-xl md:text-2xl font-black uppercase tracking-widest text-white">Transmitting Data</h2>
+        <p class="text-red-600 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] mt-4 animate-pulse">Encrypting Attachments - System Interlock Active</p>
     </div>
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-black/95 backdrop-blur-lg border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
             <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center transition-transform hover:scale-105">
-                <img src="MAG7 LOGO.png" alt="Mag 7 Machining" class="h-14 md:h-16 w-auto object-contain">
+                <img src="MAG7 LOGO.png" alt="Mag 7 Machining" class="h-10 md:h-16 w-auto object-contain">
             </a>
 
             <div class="hidden lg:flex space-x-6 text-[10px] font-bold uppercase tracking-[0.2em]">
@@ -233,14 +256,14 @@
                 <a href="javascript:void(0)" onclick="navigateTo('contact')" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-sm transition text-white shadow-lg shadow-red-600/20 ml-4">Request Quote</a>
             </div>
             
-            <button class="lg:hidden text-2xl text-red-600" onclick="navigateTo('contact')"><i class="fas fa-bars"></i></button>
+            <button class="lg:hidden text-2xl text-red-600 p-2" onclick="navigateTo('contact')"><i class="fas fa-bars"></i></button>
         </div>
     </nav>
 
-    <main class="pt-20">
+    <main class="pt-16 md:pt-20">
         <!-- HOME PAGE -->
         <div id="home" class="page-content active">
-            <header class="hero-gradient min-h-[90vh] flex items-center relative overflow-hidden">
+            <header class="hero-gradient min-h-[85vh] md:min-h-[90vh] flex items-center relative overflow-hidden">
                 <div class="g-code-hud">
                     <div class="g-code-scroll">
                         (**** TOOL HEAD TOOLS ****)<br>
@@ -310,210 +333,200 @@
                     </div>
                 </div>
                 <canvas id="particle-canvas"></canvas>
-                <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 relative z-10">
-                    <div class="space-y-8">
-                        <div class="reveal inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 rounded-full text-red-500 text-xs font-bold tracking-widest uppercase">
+                <div class="max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 relative z-10">
+                    <div class="space-y-6 md:space-y-8">
+                        <div class="reveal inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 rounded-full text-red-500 text-[10px] font-bold tracking-widest uppercase">
                             <span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
                             Est. 1995 | Lynnville, TN
                         </div>
                         <h1 class="reveal text-5xl md:text-8xl font-black leading-none tech-font uppercase">
                             Precision <br><span class="text-red-600">Defined.</span>
                         </h1>
-                        <p class="reveal text-lg text-slate-400 max-w-xl font-light leading-relaxed border-l-2 border-red-600 pl-6">
+                        <p class="reveal text-base md:text-lg text-slate-400 max-w-xl font-light leading-relaxed border-l-2 border-red-600 pl-6">
                             Welcome to Mag 7 Machining. We are your one-stop machine shop specializing in close-tolerance components for Aerospace, Defense, and Medical industries.
                         </p>
-                        <div class="reveal flex flex-wrap gap-4 pt-4">
-                            <button onclick="navigateTo('contact')" class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-sm font-black uppercase tracking-widest transition shadow-lg shadow-red-600/20">
+                        <div class="reveal flex flex-wrap gap-4 pt-2 md:pt-4">
+                            <button onclick="navigateTo('contact')" class="w-full sm:w-auto px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-sm font-black uppercase tracking-widest transition shadow-lg shadow-red-600/20">
                                 Start A Project
                             </button>
-                            <button onclick="navigateTo('industries')" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm font-black uppercase tracking-widest transition">
-                                Industries Served
+                            <button onclick="navigateTo('industries')" class="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm font-black uppercase tracking-widest transition">
+                                Industries
                             </button>
                         </div>
                     </div>
                 </div>
             </header>
             
-            <section class="bg-red-600 py-12 relative z-10">
-                <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div class="reveal text-black"><div class="text-4xl font-black tech-font">30+</div><div class="text-[10px] uppercase font-black">Years Experience</div></div>
-                    <div class="reveal text-black" style="transition-delay: 0.1s"><div class="text-4xl font-black tech-font">0.0001"</div><div class="text-[10px] uppercase font-black">Tolerance Accuracy</div></div>
-                    <div class="reveal text-black" style="transition-delay: 0.2s"><div class="text-4xl font-black tech-font">ISO</div><div class="text-[10px] uppercase font-black">9001:2015 Compliant</div></div>
-                    <div class="reveal text-black" style="transition-delay: 0.3s"><div class="text-4xl font-black tech-font">ITAR</div><div class="text-[10px] uppercase font-black">Ready & Compliant</div></div>
+            <section class="bg-red-600 py-8 md:py-12 relative z-10">
+                <div class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
+                    <div class="reveal text-black"><div class="text-3xl md:text-4xl font-black tech-font">30+</div><div class="text-[9px] md:text-[10px] uppercase font-black">Years Experience</div></div>
+                    <div class="reveal text-black" style="transition-delay: 0.1s"><div class="text-3xl md:text-4xl font-black tech-font">0.0001"</div><div class="text-[9px] md:text-[10px] uppercase font-black">Tolerance Accuracy</div></div>
+                    <div class="reveal text-black" style="transition-delay: 0.2s"><div class="text-3xl md:text-4xl font-black tech-font">ISO</div><div class="text-[9px] md:text-[10px] uppercase font-black">9001 Compliant</div></div>
+                    <div class="reveal text-black" style="transition-delay: 0.3s"><div class="text-3xl md:text-4xl font-black tech-font">ITAR</div><div class="text-[9px] md:text-[10px] uppercase font-black">Ready & Compliant</div></div>
                 </div>
             </section>
         </div>
 
         <!-- CAPABILITIES PAGE -->
-        <div id="capabilities" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto text-center mb-16">
-                <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Engineering Excellence</h2>
-                <h3 class="text-5xl font-black tech-font uppercase">Our Capabilities</h3>
+        <div id="capabilities" class="page-content py-12 md:py-20 px-4 md:px-6">
+            <div class="max-w-7xl mx-auto text-center mb-10 md:mb-16">
+                <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-[10px] md:text-sm mb-4">Engineering Excellence</h2>
+                <h3 class="text-3xl md:text-5xl font-black tech-font uppercase">Our Capabilities</h3>
             </div>
-            <div class="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="reveal card-blur p-8 rounded-sm">
-                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
-                    <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <div class="reveal card-blur p-6 md:p-8 rounded-sm">
+                    <div class="text-2xl md:text-3xl text-red-600 mb-6"><i class="fas fa-layer-group"></i></div>
+                    <h4 class="text-lg md:text-xl font-black tech-font uppercase mb-4">CNC Milling</h4>
                     <p class="text-sm text-slate-400">3, 4, and 5-axis high-speed machining centers for complex parts in aluminum, titanium, and tool steels.</p>
                 </div>
-                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.1s">
-                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
-                    <h4 class="text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
+                <div class="reveal card-blur p-6 md:p-8 rounded-sm">
+                    <div class="text-2xl md:text-3xl text-red-600 mb-6"><i class="fas fa-sync"></i></div>
+                    <h4 class="text-lg md:text-xl font-black tech-font uppercase mb-4">CNC Turning</h4>
                     <p class="text-sm text-slate-400">High-precision lathe operations featuring multi-axis turning and extreme concentricity control.</p>
                 </div>
-                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.2s">
-                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-microchip"></i></div>
-                    <h4 class="text-xl font-black tech-font uppercase mb-4">Swiss Machining</h4>
+                <div class="reveal card-blur p-6 md:p-8 rounded-sm">
+                    <div class="text-2xl md:text-3xl text-red-600 mb-6"><i class="fas fa-microchip"></i></div>
+                    <h4 class="text-lg md:text-xl font-black tech-font uppercase mb-4">Swiss Machining</h4>
                     <p class="text-sm text-slate-400">High-volume, ultra-precise turning for long, slender, and complex components required in medical and defense.</p>
                 </div>
-                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.3s">
-                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
-                    <h4 class="text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
+                <div class="reveal card-blur p-6 md:p-8 rounded-sm">
+                    <div class="text-2xl md:text-3xl text-red-600 mb-6"><i class="fas fa-wave-square"></i></div>
+                    <h4 class="text-lg md:text-xl font-black tech-font uppercase mb-4">Wire EDM</h4>
                     <p class="text-sm text-slate-400">Precision wire EDM for hardened tools, dies, and intricate details conventional machining cannot reach.</p>
                 </div>
-                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.4s">
-                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-drafting-compass"></i></div>
-                    <h4 class="text-xl font-black tech-font uppercase mb-4">CAD/CAM</h4>
+                <div class="reveal card-blur p-6 md:p-8 rounded-sm">
+                    <div class="text-2xl md:text-3xl text-red-600 mb-6"><i class="fas fa-drafting-compass"></i></div>
+                    <h4 class="text-lg md:text-xl font-black tech-font uppercase mb-4">CAD/CAM</h4>
                     <p class="text-sm text-slate-400">Fully integrated with SolidWorks and state-of-the-art CAM software for a seamless workflow.</p>
                 </div>
-                <div class="reveal card-blur p-8 rounded-sm" style="transition-delay: 0.5s">
-                    <div class="text-3xl text-red-600 mb-6"><i class="fas fa-tools"></i></div>
-                    <h4 class="text-xl font-black tech-font uppercase mb-4">Manual Machining</h4>
+                <div class="reveal card-blur p-6 md:p-8 rounded-sm">
+                    <div class="text-2xl md:text-3xl text-red-600 mb-6"><i class="fas fa-tools"></i></div>
+                    <h4 class="text-lg md:text-xl font-black tech-font uppercase mb-4">Manual Machining</h4>
                     <p class="text-sm text-slate-400">Traditional Bridgeports and lathes for custom one-off parts, specialized repairs, and rapid modifications.</p>
                 </div>
             </div>
         </div>
 
         <!-- INDUSTRIES PAGE -->
-        <div id="industries" class="page-content py-20 px-6">
-            <div class="max-w-7xl mx-auto text-center mb-16">
-                <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-sm mb-4">Market Focus</h2>
-                <h3 class="text-5xl font-black tech-font uppercase">Industries We Serve</h3>
+        <div id="industries" class="page-content py-12 md:py-20 px-4 md:px-6">
+            <div class="max-w-7xl mx-auto text-center mb-10 md:mb-16">
+                <h2 class="text-red-600 font-black tracking-[0.3em] uppercase text-[10px] md:text-sm mb-4">Market Focus</h2>
+                <h3 class="text-3xl md:text-5xl font-black tech-font uppercase">Industries We Serve</h3>
             </div>
-            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 lg:gap-12">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-6 md:gap-12">
                 <div class="reveal card-blur overflow-hidden group">
-                    <div class="h-64 overflow-hidden relative">
+                    <div class="h-48 md:h-64 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Medical" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Medical</h4></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-xl md:text-2xl font-black tech-font uppercase">Medical</h4></div>
                     </div>
-                    <div class="p-8 space-y-4">
-                        <p class="text-slate-400">Specializing in high-precision orthopedic implants, titanium cervical plates, and bone screws with critical surface finishes.</p>
-                    </div>
+                    <div class="p-6 md:p-8"><p class="text-sm md:text-base text-slate-400">Manufacturing high-precision orthopedic implants, titanium cervical plates, and bone screws with critical surface finishes.</p></div>
                 </div>
-                <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.1s">
-                    <div class="h-64 overflow-hidden relative">
+                <div class="reveal card-blur overflow-hidden group">
+                    <div class="h-48 md:h-64 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Aerospace" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Aerospace</h4></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-xl md:text-2xl font-black tech-font uppercase">Aerospace</h4></div>
                     </div>
-                    <div class="p-8 space-y-4">
-                        <p class="text-slate-400">Providing flight-critical airframe parts, jet engine components, and fasteners machined from exotic alloys like Titanium.</p>
-                    </div>
+                    <div class="p-6 md:p-8"><p class="text-sm md:text-base text-slate-400">Providing flight-critical airframe parts, jet engine components, and fasteners machined from exotic alloys like Titanium.</p></div>
                 </div>
-                <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.2s">
-                    <div class="h-64 overflow-hidden relative">
+                <div class="reveal card-blur overflow-hidden group">
+                    <div class="h-48 md:h-64 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=800&q=80" alt="Automotive" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Automotive</h4></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-xl md:text-2xl font-black tech-font uppercase">Automotive</h4></div>
                     </div>
-                    <div class="p-8 space-y-4">
-                        <p class="text-slate-400">High-performance CNC solutions for racing. We manufacture custom engine blocks and powertrain assemblies for extreme durability.</p>
-                    </div>
+                    <div class="p-6 md:p-8"><p class="text-sm md:text-base text-slate-400">High-performance CNC solutions for racing. We manufacture custom engine blocks and powertrain assemblies for extreme durability.</p></div>
                 </div>
-                <div class="reveal card-blur overflow-hidden group" style="transition-delay: 0.3s">
-                    <div class="h-64 overflow-hidden relative">
+                <div class="reveal card-blur overflow-hidden group">
+                    <div class="h-48 md:h-64 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Defense" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute bottom-4 left-6"><h4 class="text-2xl font-black tech-font uppercase">Defense</h4></div>
+                        <div class="absolute bottom-4 left-6"><h4 class="text-xl md:text-2xl font-black tech-font uppercase">Defense</h4></div>
                     </div>
-                    <div class="p-8 space-y-4">
-                        <p class="text-slate-400">ITAR-compliant manufacturing of rugged hardware, tactical housings, and optical components for mission-critical defense systems.</p>
-                    </div>
+                    <div class="p-6 md:p-8"><p class="text-sm md:text-base text-slate-400">ITAR-compliant manufacturing of rugged hardware, tactical housings, and optical components for mission-critical defense systems.</p></div>
                 </div>
             </div>
         </div>
 
         <!-- ABOUT PAGE -->
-        <div id="about" class="page-content py-20 px-6">
-            <div class="max-w-4xl mx-auto space-y-16">
+        <div id="about" class="page-content py-12 md:py-20 px-4 md:px-6">
+            <div class="max-w-4xl mx-auto space-y-10 md:space-y-16">
                 <div class="text-center relative reveal">
-                    <h3 class="text-5xl md:text-7xl font-black tech-font uppercase tracking-tighter">Our <span class="text-red-600">Story</span></h3>
-                    <div class="w-24 h-1 bg-red-600 mx-auto mt-4"></div>
+                    <h3 class="text-4xl md:text-7xl font-black tech-font uppercase tracking-tighter">Our <span class="text-red-600">Story</span></h3>
+                    <div class="w-16 md:w-24 h-1 bg-red-600 mx-auto mt-4"></div>
                 </div>
-                <div class="space-y-8 text-slate-300 text-xl leading-relaxed tracking-wide font-light">
+                <div class="space-y-6 md:space-y-8 text-slate-300 text-lg md:text-xl leading-relaxed tracking-wide font-light">
                     <p class="reveal">Mag 7 Machining was founded with a singular goal: to provide uncompromising quality and precision to industrial sectors that demand absolute excellence.</p>
-                    <p class="reveal border-l-4 border-red-600 pl-8 py-4 italic text-slate-100 bg-white/5">Located in Lynnville, TN, we have evolved into a high-tech manufacturing facility. Our commitment to world-class technology ensures that our clients receive parts that meet the tightest tolerances.</p>
+                    <p class="reveal border-l-4 border-red-600 pl-6 md:pl-8 py-4 italic text-slate-100 bg-white/5">Located in Lynnville, TN, we have evolved into a high-tech manufacturing facility. Our commitment to world-class technology ensures that our clients receive parts that meet the tightest tolerances.</p>
                     <p class="reveal">Our team brings over <span class="text-red-600 font-bold tech-font">30+ years</span> of experience in complex milling, turning, EDM, and high production runs.</p>
                 </div>
             </div>
         </div>
 
         <!-- CONTACT PAGE -->
-        <div id="contact" class="page-content py-20 px-6">
+        <div id="contact" class="page-content py-12 md:py-20 px-4 md:px-6">
             <div class="max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-2 gap-16 mb-24">
+                <div class="grid lg:grid-cols-2 gap-10 md:gap-16 mb-16 md:mb-24">
                     <div class="reveal">
-                        <h3 class="text-4xl font-black tech-font uppercase mb-8">Request A <span class="text-red-600">Quote</span></h3>
-                        <form id="rfq-form" class="space-y-6">
-                            <div class="grid md:grid-cols-2 gap-6">
+                        <h3 class="text-3xl md:text-4xl font-black tech-font uppercase mb-6 md:mb-8">Request A <span class="text-red-600">Quote</span></h3>
+                        <form id="rfq-form" class="space-y-4 md:space-y-6">
+                            <div class="grid md:grid-cols-2 gap-4 md:gap-6">
                                 <input type="text" id="form-name" name="name" required placeholder="Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                                 <input type="email" id="form-email" name="email" required placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                             </div>
-                            <div class="grid md:grid-cols-2 gap-6">
+                            <div class="grid md:grid-cols-2 gap-4 md:gap-6">
                                 <input type="text" id="form-company" name="company" placeholder="Company Name" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                                 <input type="text" id="form-phone" name="phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white">
                             </div>
                             <div class="space-y-2">
-                                <label class="text-xs uppercase tracking-widest font-bold text-slate-500">Attach Blueprints (STEP, PDF, DXF)</label>
-                                <div class="file-input-wrapper border-2 border-dashed border-white/10 hover:border-red-600/50 transition p-8 text-center bg-white/5 cursor-pointer">
+                                <label class="text-[10px] uppercase tracking-widest font-bold text-slate-500">Attach Blueprints (STEP, PDF, DXF)</label>
+                                <div class="file-input-wrapper border-2 border-dashed border-white/10 hover:border-red-600/50 transition p-6 md:p-8 text-center bg-white/5 cursor-pointer">
                                     <div id="file-list-display"><p class="text-sm text-slate-400">Click or drag files here to upload</p></div>
                                     <input type="file" id="form-file" name="attachments[]" multiple onchange="updateFileName(this)">
                                 </div>
                             </div>
                             <textarea id="form-message" name="message" rows="4" placeholder="Briefly describe your requirements..." class="w-full bg-white/5 border border-white/10 p-4 outline-none focus:border-red-600 transition text-white"></textarea>
                             <button type="submit" id="submit-btn" class="w-full py-5 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-3 shadow-lg shadow-red-600/20">
-                                Send Inquiry <i class="fas fa-paper-plane"></i>
+                                Send Inquiry <i class="fas fa-paper-plane text-sm"></i>
                             </button>
                         </form>
                         <div id="form-response" class="hidden mt-4 p-4 text-center rounded bg-green-500/10 border border-green-500/30 text-green-500 tech-font uppercase text-xs">Request Transmitted Successfully</div>
                     </div>
-                    <div class="reveal space-y-10" style="transition-delay: 0.2s">
+                    <div class="reveal space-y-8 md:space-y-10" style="transition-delay: 0.2s">
                         <div>
-                            <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Location</h4>
-                            <p class="text-slate-400 leading-relaxed font-light">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd, Lynnville, TN 38472</p>
+                            <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4 text-[10px] md:text-sm">Location</h4>
+                            <p class="text-slate-400 text-sm md:text-base leading-relaxed">Mag 7 Machining, LLC<br>556 Mt Olive Cemetery Rd, Lynnville, TN 38472</p>
                         </div>
                         <div>
-                            <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4">Direct Contact</h4>
-                            <p class="text-slate-400 font-bold text-xl mb-1">+1 (931) 424-8841</p>
-                            <a href="mailto:rfq@mag7machining.com" class="text-slate-400 font-light underline decoration-red-600/30 hover:text-red-600 transition block text-lg">rfq@mag7machining.com</a>
+                            <h4 class="font-bold uppercase tracking-widest text-red-600 mb-4 text-[10px] md:text-sm">Direct Contact</h4>
+                            <p class="text-slate-400 font-bold text-lg md:text-xl">+1 (931) 424-8841</p>
+                            <span class="text-slate-400 font-light block text-base md:text-lg">rfq@mag7machining.com</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- SIMULATOR SECTION -->
-                <div class="reveal pt-24 mt-24 border-t border-white/5">
-                    <div class="text-center space-y-6">
+                <div class="reveal pt-16 md:pt-24 mt-16 md:mt-24 border-t border-white/5">
+                    <div class="text-center space-y-4 md:space-y-6">
                         <div class="flex items-center justify-center gap-4">
-                            <div class="h-px bg-red-600/30 w-12"></div>
-                            <h3 class="text-2xl font-black tech-font uppercase tracking-tighter text-red-600">Machining Simulator</h3>
-                            <div class="h-px bg-red-600/30 w-12"></div>
+                            <div class="h-px bg-red-600/30 w-8 md:w-12"></div>
+                            <h3 class="text-xl md:text-2xl font-black tech-font uppercase tracking-tighter text-red-600">Machining Simulator</h3>
+                            <div class="h-px bg-red-600/30 w-8 md:w-12"></div>
                         </div>
-                        <p id="game-phase-text" class="text-red-600 text-[10px] font-black uppercase tracking-[0.4em]">System Standby</p>
+                        <p id="game-phase-text" class="text-red-600 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em]">System Standby</p>
                         
                         <div id="game-container" class="rounded-lg shadow-2xl relative">
                             <canvas id="game-canvas"></canvas>
-                            
-                            <!-- Interlock Overlay -->
                             <div id="game-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-20">
-                                <div id="game-message" class="mb-8 tech-font text-white uppercase text-center hidden"></div>
-                                <button id="start-game-btn" class="px-12 py-6 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition transform hover:scale-105 shadow-xl">Initiate Machining</button>
+                                <div id="game-message" class="mb-6 md:mb-8 tech-font text-white uppercase text-center hidden px-4"></div>
+                                <button id="start-game-btn" class="px-8 md:px-12 py-4 md:py-6 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition transform hover:scale-105 shadow-xl text-xs md:text-sm">Initiate Machining</button>
                             </div>
 
-                            <div id="arm-indicator" class="hidden">Safety Lock: Move Cursor to Green Start Zone</div>
+                            <div id="arm-indicator" class="hidden">Safety Lock: Move Cursor / Touch Start Zone</div>
                             
                             <!-- Digital Read Out (DRO) -->
-                            <div id="game-stats" class="absolute top-8 left-8 grid grid-cols-2 gap-x-16 gap-y-6 text-left z-10 pointer-events-none hidden">
-                                <div><div class="dro-label">X-Axis Position</div><div id="x-axis-display" class="dro-value">0.0000</div></div>
-                                <div><div class="dro-label">Y-Axis Position</div><div id="y-axis-display" class="dro-value">0.0000</div></div>
-                                <div><div class="dro-label">Surface Deviation</div><div id="accuracy-display" class="dro-value">0.0000"</div></div>
-                                <div><div class="dro-label">Pass Yield</div><div id="yield-display" class="dro-value text-green-500">100%</div></div>
+                            <div id="game-stats" class="absolute top-4 left-4 md:top-8 md:left-8 grid grid-cols-2 gap-x-8 md:gap-x-16 gap-y-3 md:gap-y-6 text-left z-10 pointer-events-none hidden">
+                                <div><div class="dro-label">X-Axis</div><div id="x-axis-display" class="dro-value">0.0000</div></div>
+                                <div><div class="dro-label">Y-Axis</div><div id="y-axis-display" class="dro-value">0.0000</div></div>
+                                <div><div class="dro-label">Deviation</div><div id="accuracy-display" class="dro-value">0.0000"</div></div>
+                                <div><div class="dro-label">Yield</div><div id="yield-display" class="dro-value text-green-500">100%</div></div>
                             </div>
                         </div>
                     </div>
@@ -522,10 +535,10 @@
         </div>
     </main>
 
-    <footer class="bg-black pt-20 pb-10 border-t border-white/5">
+    <footer class="bg-black pt-12 md:pt-20 pb-8 md:pb-10 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <img src="MAG7 LOGO.png" alt="Logo" class="h-12 w-auto mx-auto mb-6 grayscale transition hover:grayscale-0">
-            <p class="text-slate-600 text-[10px] uppercase tracking-[0.2em]">&copy; 2026 Mag 7 Machining, LLC. | Lynnville, TN</p>
+            <img src="MAG7 LOGO.png" alt="Logo" class="h-8 md:h-12 w-auto mx-auto mb-6 grayscale transition hover:grayscale-0">
+            <p class="text-slate-600 text-[8px] md:text-[10px] uppercase tracking-[0.2em]">&copy; 2026 Mag 7 Machining, LLC. | Lynnville, TN</p>
         </div>
     </footer>
 
@@ -557,7 +570,6 @@
         window.addEventListener("scroll", reveal);
         window.onload = reveal;
 
-        // FILE SELECTION VISUAL FEEDBACK (RESTORED)
         function updateFileName(input) {
             let listDisplay = document.getElementById('file-list-display');
             if (!input.files || input.files.length === 0) {
@@ -575,36 +587,6 @@
                 html += `</div>`;
                 listDisplay.innerHTML = html;
             }
-        }
-
-        // PARTICLES (HERO)
-        const particleCanvas = document.getElementById('particle-canvas');
-        const pctx = particleCanvas.getContext('2d');
-        let particles = [];
-        let mousePos = { x: -1000, y: -1000, radius: 120 };
-
-        window.addEventListener('mousemove', (e) => { mousePos.x = e.clientX; mousePos.y = e.clientY; });
-
-        function initParticles() {
-            particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight;
-            particles = [];
-            for (let i = 0; i < 80; i++) {
-                particles.push({ x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height, size: Math.random() * 2 + 1, speedX: (Math.random() - 0.5) * 0.6, speedY: (Math.random() - 0.5) * 0.6, color: 'rgba(237, 28, 36, 0.4)' });
-            }
-        }
-
-        function animateParticles() {
-            pctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-            particles.forEach(p => {
-                p.x += p.speedX; p.y += p.speedY;
-                if (p.x < 0) p.x = particleCanvas.width; if (p.x > particleCanvas.width) p.x = 0;
-                if (p.y < 0) p.y = particleCanvas.height; if (p.y > particleCanvas.height) p.y = 0;
-                let dx = mousePos.x - p.x; let dy = mousePos.y - p.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                if (dist < mousePos.radius) { p.x -= dx / 50; p.y -= dy / 50; }
-                pctx.fillStyle = p.color; pctx.beginPath(); pctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); pctx.fill();
-            });
-            requestAnimationFrame(animateParticles);
         }
 
         // RFQ HANDLER
@@ -693,10 +675,13 @@
             gctx.lineWidth = maxTolerance * 2; gctx.lineJoin = 'round'; gctx.lineCap = 'round';
             gctx.beginPath(); gctx.moveTo(path[0].x, path[0].y); path.forEach(p => gctx.lineTo(p.x, p.y)); gctx.stroke();
 
+            // Pulsating Target Circle
             if (isArmed) {
                 const endP = path[path.length - 1];
                 gctx.strokeStyle = '#ED1C24'; gctx.lineWidth = 2;
                 gctx.beginPath(); gctx.arc(endP.x, endP.y, 12 + Math.sin(Date.now()/150)*6, 0, Math.PI*2); gctx.stroke();
+                gctx.beginPath(); gctx.moveTo(endP.x-5, endP.y); gctx.lineTo(endP.x+5, endP.y); gctx.stroke();
+                gctx.beginPath(); gctx.moveTo(endP.x, endP.y-5); gctx.lineTo(endP.x, endP.y+5); gctx.stroke();
             }
 
             if (!isArmed) {
@@ -747,9 +732,52 @@
         function distToSegment(p, v, w) { let l2 = Math.pow(v.x - w.x, 2) + Math.pow(v.y - w.y, 2); if (l2 == 0) return Math.sqrt(Math.pow(p.x - v.x, 2) + Math.pow(p.y - v.y, 2)); let t = Math.max(0, Math.min(1, ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2)); return Math.sqrt(Math.pow(p.x - (v.x + t * (w.x - v.x)), 2) + Math.pow(p.y - (v.y + t * (w.y - v.y)), 2)); }
 
         startBtn.onclick = () => { isGameRunning = true; gameOverlay.classList.add('hidden'); gameStats.classList.remove('hidden'); initGame(); drawGame(); };
-        gameCanvas.onmousemove = (e) => { const rect = gameCanvas.getBoundingClientRect(); targetX = e.clientX - rect.left; targetY = e.clientY - rect.top; };
         
+        // MOUSE AND TOUCH HANDLING
+        function updateTarget(x, y) {
+            const rect = gameCanvas.getBoundingClientRect();
+            targetX = x - rect.left;
+            targetY = y - rect.top;
+        }
+
+        gameCanvas.onmousemove = (e) => updateTarget(e.clientX, e.clientY);
+        gameCanvas.addEventListener('touchstart', (e) => {
+            if (e.touches[0]) updateTarget(e.touches[0].clientX, e.touches[0].clientY);
+        }, {passive: true});
+        gameCanvas.addEventListener('touchmove', (e) => {
+            if (e.touches[0]) updateTarget(e.touches[0].clientX, e.touches[0].clientY);
+        }, {passive: true});
+        
+        // PARTICLES (HERO)
+        const particleCanvas = document.getElementById('particle-canvas');
+        const pctx = particleCanvas.getContext('2d');
+        let particles = [];
+        let mousePosition = { x: -1000, y: -1000, radius: 120 };
+        window.addEventListener('mousemove', (e) => { mousePosition.x = e.clientX; mousePosition.y = e.clientY; });
+
+        function initParticles() {
+            particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push({ x: Math.random() * particleCanvas.width, y: Math.random() * particleCanvas.height, size: Math.random() * 2 + 1, speedX: (Math.random() - 0.5) * 0.6, speedY: (Math.random() - 0.5) * 0.6, color: 'rgba(237, 28, 36, 0.4)' });
+            }
+        }
+
+        function animateParticles() {
+            pctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0) p.x = particleCanvas.width; if (p.x > particleCanvas.width) p.x = 0;
+                if (p.y < 0) p.y = particleCanvas.height; if (p.y > particleCanvas.height) p.y = 0;
+                let dx = mousePosition.x - p.x; let dy = mousePosition.y - p.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < mousePosition.radius) { p.x -= dx / 50; p.y -= dy / 50; }
+                pctx.fillStyle = p.color; pctx.beginPath(); pctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); pctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
         initParticles(); animateParticles();
+        window.onresize = () => initParticles();
     </script>
 </body>
 </html>
